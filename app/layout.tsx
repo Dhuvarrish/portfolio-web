@@ -9,10 +9,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Personal portfolio website",
-};
 
 export default function RootLayout({
   children,
