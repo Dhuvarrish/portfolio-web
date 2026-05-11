@@ -16,6 +16,13 @@ export const api = {
   getSkills: () => apiFetch<Skill[]>("/api/skills"),
   sendContact: (body: ContactPayload) =>
     apiFetch<void>("/api/contact", { method: "POST", body: JSON.stringify(body) }),
+  getCars: (params: { search?: string; page?: number; pageSize?: number }) => {
+    const q = new URLSearchParams();
+    if (params.search) q.set("search", params.search);
+    q.set("page", String(params.page ?? 1));
+    q.set("pageSize", String(params.pageSize ?? 10));
+    return apiFetch<PagedResult<Car>>(`/api/cars?${q.toString()}`);
+  },
 };
 
 export interface Project {
@@ -25,6 +32,25 @@ export interface Project {
   tags: string[];
   repoUrl?: string;
   liveUrl?: string;
+}
+
+export interface Car {
+  id: number;
+  make: string;
+  model: string;
+  year: number;
+  type: string;
+  seatCount: number;
+  color: string;
+  price: number;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }
 
 export interface Skill {
