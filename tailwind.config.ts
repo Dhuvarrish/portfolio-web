@@ -17,6 +17,10 @@ const config: Config = {
   		}
   	},
   	extend: {
+  		screens: {
+  			tablet: '820px',
+  			wide: '1060px',
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

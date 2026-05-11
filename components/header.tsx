@@ -46,7 +46,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="wide:hidden"
             onClick={() => setMenuOpen(true)}
             aria-label="Toggle navigation"
           >
@@ -56,11 +56,11 @@ export function Header() {
       </div>
 
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-        <SheetContent side="right" className="w-56 p-0">
-          <SheetHeader className="px-4 py-4 border-b">
-            <SheetTitle className="text-left text-base">Navigation</SheetTitle>
+        <SheetContent side="right" className="w-[70%] sm:max-w-none tablet:max-w-80 p-0 flex flex-col">
+          <SheetHeader className="px-6 py-5 border-b border-border">
+            <SheetTitle className="text-left text-xl font-bold tracking-tight">Menu</SheetTitle>
           </SheetHeader>
-          <nav className="flex flex-col gap-1 p-2">
+          <nav className="flex flex-col gap-1 p-3 flex-1">
             {navItems.map((item) => {
               const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
               return (
@@ -68,14 +68,14 @@ export function Header() {
                   key={item.label}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-base font-medium transition-colors
+                  className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
                     ${isActive
                       ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                 >
-                  <item.icon className="size-5 shrink-0" />
-                  {item.label}
+                  <item.icon className="size-6 shrink-0" />
+                  <span>{item.label}</span>
                 </Link>
               )
             })}

@@ -27,7 +27,7 @@ export default function RootLayout({
             <Header />
             <div className="flex min-h-screen pt-16 pb-12">
               <AppSidebar />
-              <main className="flex-1 min-w-0 overflow-x-hidden px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
+              <main className="flex-1 min-w-0 px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
                 {children}
               </main>
             </div>

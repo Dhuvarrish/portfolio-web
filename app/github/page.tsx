@@ -182,7 +182,7 @@ export default async function GithubPage() {
   const { user, repos, contributions, totalContributions } = await getGitHubData()
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 md:p-8 overflow-hidden">
+    <div className="w-full max-w-3xl mx-auto p-4 md:p-8">
       <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
         <Image
           src={user.avatar_url}
