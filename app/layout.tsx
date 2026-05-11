@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <Header />
-          <main className="container pt-16">{children}</main>
+          <main className="pt-16 pb-16 min-h-screen">{children}</main>
         </ThemeProvider>
       </body>
     </html>

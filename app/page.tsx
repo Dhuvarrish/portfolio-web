@@ -19,7 +19,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+    <div className="flex flex-col items-center gap-4 py-5">
       <Button onClick={handlePing} disabled={loading} size="lg">
         {loading ? "Connecting..." : "Test Backend Connection"}
       </Button>
