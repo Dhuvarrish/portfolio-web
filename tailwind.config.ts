@@ -37,6 +37,8 @@ const config: Config = {
   				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
   				accent: 'hsl(var(--sidebar-accent))',
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				active: 'hsl(var(--sidebar-active))',
+  				'active-foreground': 'hsl(var(--sidebar-active-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			}

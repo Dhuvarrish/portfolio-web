@@ -23,16 +23,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
-          <div className="flex flex-col min-h-screen">
+          <SidebarProvider defaultOpen={true}>
             <Header />
-            <SidebarProvider defaultOpen={false}>
-              <div className="flex flex-1 overflow-hidden">
-                <AppSidebar />
-                <main className="flex-1 overflow-y-auto">{children}</main>
-              </div>
-            </SidebarProvider>
+            <div className="flex min-h-screen pt-16 pb-12">
+              <AppSidebar />
+              <main className="flex-1 min-w-0 overflow-x-hidden px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
+                {children}
+              </main>
+            </div>
             <Footer />
-          </div>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
