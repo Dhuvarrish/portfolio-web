@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { ExternalLink, Star, GitFork, Users, BookOpen, Lock } from "lucide-react"
+import { ContributionGrid } from "@/components/contribution-grid"
 
 type GitHubUser = {
   name: string
@@ -119,67 +120,11 @@ async function getGitHubData() {
   return { user, repos, contributions, totalContributions }
 }
 
-const levelClasses: Record<number, string> = {
-  0: "bg-muted",
-  1: "bg-green-300 dark:bg-green-900",
-  2: "bg-green-400 dark:bg-green-700",
-  3: "bg-green-600 dark:bg-green-500",
-  4: "bg-green-800 dark:bg-green-400",
-}
-
-function countToLevel(count: number, max: number): 0 | 1 | 2 | 3 | 4 {
-  if (count === 0 || max === 0) return 0
-  const ratio = count / max
-  if (ratio <= 0.25) return 1
-  if (ratio <= 0.5) return 2
-  if (ratio <= 0.75) return 3
-  return 4
-}
-
-function ContributionGrid({ contributions, total }: { contributions: ContributionDay[]; total: number }) {
-  const maxCount = Math.max(...contributions.map(d => d.count), 1)
-  const firstDay = new Date(contributions[0]?.date ?? new Date().toISOString()).getDay()
-  const padded = [...Array.from({ length: firstDay }, () => null), ...contributions]
-  const weeks: (ContributionDay | null)[][] = []
-  for (let i = 0; i < padded.length; i += 7) weeks.push(padded.slice(i, i + 7))
-
-  return (
-    <div className="w-[85vw] md:w-full rounded-lg border border-border p-4 mb-8">
-      <p className="text-sm font-medium mb-3 text-muted-foreground">
-        {total} contributions in the last year
-      </p>
-      <div className="overflow-x-auto overflow-y-hidden">
-        <div className="flex gap-[3px]" style={{ width: "max-content" }}>
-          {weeks.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px]">
-              {week.map((day, di) =>
-                day ? (
-                  <div
-                    key={di}
-                    title={`${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}`}
-                    className={`size-[13px] rounded-sm ${levelClasses[countToLevel(day.count, maxCount)]}`}
-                  />
-                ) : (
-                  <div key={di} className="size-[13px]" />
-                )
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-          <span>Less</span>
-          {[0, 1, 2, 3, 4].map((l) => (
-            <div key={l} className={`size-[10px] rounded-sm ${levelClasses[l]}`} />
-          ))}
-          <span>More</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default async function GithubPage() {
   const { user, repos, contributions, totalContributions } = await getGitHubData()
+
+  const currentYear = new Date().getFullYear()
+  const currentYearContributions = contributions.filter(d => d.date.startsWith(`${currentYear}-`))
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 md:p-8">
@@ -213,7 +158,7 @@ export default async function GithubPage() {
         <span>{user.following} following</span>
       </div>
 
-      <ContributionGrid contributions={contributions} total={totalContributions} />
+      <ContributionGrid contributions={currentYearContributions} total={totalContributions} />
 
       <h2 className="text-xl font-semibold mb-3 md:mb-4">Recent Repositories</h2>
       <div className="w-full grid gap-3">
