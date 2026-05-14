@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { ExternalLink, Star, GitFork, Users, BookOpen, Lock } from "lucide-react"
+import { ExternalLink, Users, BookOpen, Lock } from "lucide-react"
 import { ContributionGrid } from "@/components/contribution-grid"
 
 type GitHubUser = {
@@ -127,7 +127,7 @@ export default async function GithubPage() {
   const currentYearContributions = contributions.filter(d => d.date.startsWith(`${currentYear}-`))
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 md:p-8">
+    <>
       <div className="flex items-center gap-4 md:gap-6 mb-6 md:mb-8">
         <Image
           src={user.avatar_url}
@@ -163,11 +163,8 @@ export default async function GithubPage() {
       <h2 className="text-xl font-semibold mb-3 md:mb-4">Recent Repositories</h2>
       <div className="w-full grid gap-3">
         {repos.map((repo) => (
-          <a
+          <div
             key={repo.id}
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-full block rounded-lg border border-border p-3 md:p-4 hover:bg-muted transition-colors overflow-hidden"
           >
             <div className="flex items-start justify-between gap-2 w-full">
@@ -184,16 +181,15 @@ export default async function GithubPage() {
                   <p className="mt-1 text-sm text-muted-foreground line-clamp-2 break-words overflow-hidden">{repo.description}</p>
                 )}
               </div>
-              <ExternalLink className="size-4 shrink-0 text-muted-foreground mt-0.5" />
             </div>
-            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-              {repo.language && <span>{repo.language}</span>}
-              <span className="flex items-center gap-1"><Star className="size-3.5" /> {repo.stargazers_count}</span>
-              <span className="flex items-center gap-1"><GitFork className="size-3.5" /> {repo.forks_count}</span>
-            </div>
-          </a>
+            {repo.language && (
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <span>{repo.language}</span>
+              </div>
+            )}
+          </div>
         ))}
       </div>
-    </div>
+    </>
   )
 }

@@ -17,14 +17,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} `}>
         <ThemeProvider>
           <SidebarProvider defaultOpen={true}>
             <Header />
-            <div className="flex min-h-screen pt-16 pb-12">
+            <div className="flex min-h-screen pt-10 md:pt-10">
               <AppSidebar />
-              <main className="flex-1 min-w-0 px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
-                {children}
+              <main className="mt-16 mb-12 w-full  mx-auto p-4 md:p-10">
+
+
+                <div className="flex-1 min-w-0 px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
+                  {children}
+                </div>
               </main>
             </div>
             <Footer />

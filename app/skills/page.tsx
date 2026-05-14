@@ -19,7 +19,7 @@ export default function SkillsPage() {
   }
 
   return (
-    <div className="p-4 md:p-8">
+    <>
       <h1 className="text-2xl md:text-3xl font-bold">Skills</h1>
       <p className="mt-4 text-base md:text-sm text-muted-foreground">This is the skills page.</p>
       <div className="mt-8 flex flex-col items-start gap-4">
@@ -30,6 +30,6 @@ export default function SkillsPage() {
           <p className="text-muted-foreground text-base md:text-sm">{message}</p>
         )}
       </div>
-    </div>
+    </>
   );
 }

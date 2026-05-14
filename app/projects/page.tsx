@@ -18,7 +18,7 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="w-full py-8 md:py-10 space-y-6">
+    <div className="space-y-6">
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
           What I&apos;ve built
