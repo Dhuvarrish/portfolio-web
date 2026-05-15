@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { api } from "@/lib/api";
+import { ping } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 
 export default function SkillsPage() {
@@ -11,7 +11,7 @@ export default function SkillsPage() {
   async function handlePing() {
     setLoading(true);
     try {
-      const data = await api.ping();
+      const data = await ping();
       setMessage(data.message);
     } finally {
       setLoading(false);

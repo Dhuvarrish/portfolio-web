@@ -76,7 +76,7 @@ const approach = [
 
 export default function AboutPage() {
   return (
-    <div className="w-full py-8 md:py-10 space-y-14">
+    <div className="w-full space-y-14">
 
       {/* Hero */}
       <section className="space-y-5">

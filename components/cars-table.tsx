@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { api, type Car, type PagedResult } from "@/lib/api";
+import { getCars, type Car, type PagedResult } from "@/app/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -16,6 +16,18 @@ import {
 } from "@/components/ui/table";
 
 const PAGE_SIZE = 8;
+
+function getPageNumbers(current: number, total: number): (number | "...")[] {
+  if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1);
+  const left = Math.max(2, current - 1);
+  const right = Math.min(total - 1, current + 1);
+  const items: (number | "...")[] = [1];
+  if (left > 2) items.push("...");
+  for (let i = left; i <= right; i++) items.push(i);
+  if (right < total - 1) items.push("...");
+  items.push(total);
+  return items;
+}
 
 const colorMap: Record<string, string> = {
   white: "bg-white border border-border",
@@ -57,8 +69,7 @@ export function CarsTable() {
 
   const fetchCars = useCallback(() => {
     setCarsLoading(true);
-    api
-      .getCars({ search: debouncedSearch, page, pageSize: PAGE_SIZE })
+    getCars({ search: debouncedSearch, page, pageSize: PAGE_SIZE })
       .then(setCarsResult)
       .catch(console.error)
       .finally(() => setCarsLoading(false));
@@ -86,8 +97,8 @@ export function CarsTable() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-border bg-muted/20 overflow-hidden">
-        <Table>
+      <div className="rounded-xl border border-border bg-muted/20 overflow-x-auto">
+        <Table className="whitespace-nowrap">
           <TableHeader>
             <TableRow className="hover:bg-transparent">
               <TableHead>Make</TableHead>
@@ -143,12 +154,12 @@ export function CarsTable() {
 
       {/* Pagination */}
       {carsResult && carsResult.totalPages > 1 && (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4">
           <p className="text-xs text-muted-foreground">
             {carsResult.totalCount} result{carsResult.totalCount !== 1 ? "s" : ""} &mdash; page{" "}
             {carsResult.page} of {carsResult.totalPages}
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center">
             <Button
               variant="outline"
               size="sm"
@@ -160,20 +171,25 @@ export function CarsTable() {
               Prev
             </Button>
             <div className="flex gap-1">
-              {Array.from({ length: carsResult.totalPages }, (_, i) => i + 1).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPage(p)}
-                  disabled={carsLoading}
-                  className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${
-                    p === page
+              {getPageNumbers(page, carsResult.totalPages).map((p, i) =>
+                p === "..." ? (
+                  <span key={`ellipsis-${i}`} className="h-8 w-6 flex items-center justify-center text-xs text-muted-foreground select-none">
+                    &hellip;
+                  </span>
+                ) : (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    disabled={carsLoading}
+                    className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${p === page
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {p}
-                </button>
-              ))}
+                      }`}
+                  >
+                    {p}
+                  </button>
+                )
+              )}
             </div>
             <Button
               variant="outline"

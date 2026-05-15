@@ -65,7 +65,7 @@ export function ContributionGrid({ contributions, total }: { contributions: Cont
   })
 
   return (
-    <div className="w-full min-w-[22rem] max-w-[22rem] md:min-w-[35rem] md:max-w-[35rem] rounded-lg border border-border p-10 mb-8">
+    <div className="w-full min-w-[22rem] max-w-[25rem] md:min-w-[35rem] md:max-w-[35rem] rounded-lg border border-border p-10 mb-8">
       <p className="text-sm font-medium mb-3 text-muted-foreground">
         {total} contributions in the last year
       </p>

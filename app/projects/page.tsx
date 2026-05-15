@@ -2,16 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, GitBranch } from "lucide-react";
-import { api, type Project } from "@/lib/api";
+import { GitBranch } from "lucide-react";
+import { getProjects, type Project } from "@/app/actions";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api
-      .getProjects()
+    getProjects()
       .then(setProjects)
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -51,7 +50,6 @@ export default function ProjectsPage() {
 function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="group relative rounded-2xl border border-border bg-muted/30 p-5 hover:bg-muted/50 transition-colors flex flex-col gap-3">
-      {/* Clickable overlay — covers the whole card except the action links */}
       <Link
         href={`/projects/${project.id}`}
         className="absolute inset-0 rounded-2xl"
@@ -88,17 +86,6 @@ function ProjectCard({ project }: { project: Project }) {
             >
               <GitBranch className="size-3.5" />
               Repo
-            </a>
-          )}
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ExternalLink className="size-3.5" />
-              Live
             </a>
           )}
         </div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, GitBranch } from "lucide-react";
-import { api, type Project } from "@/lib/api";
+import { getProject, type Project } from "@/app/actions";
 import { CarsTable } from "@/components/cars-table";
 
 export default function ProjectDetailPage() {
@@ -20,8 +20,7 @@ export default function ProjectDetailPage() {
       setLoading(false);
       return;
     }
-    api
-      .getProject(numId)
+    getProject(numId)
       .then(setProject)
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));

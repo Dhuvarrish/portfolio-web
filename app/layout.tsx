@@ -19,22 +19,18 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} `}>
         <ThemeProvider>
+          <Header />
           <SidebarProvider defaultOpen={true}>
-            <Header />
-            <div className="flex min-h-screen pt-10 md:pt-10">
-              <AppSidebar />
-              <main className="mt-16 mb-12 w-full  mx-auto p-4 md:p-10">
-
-
-                <div className="flex-1 min-w-0 px-4 md:px-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
-                  {children}
-                </div>
-              </main>
-            </div>
+            <AppSidebar />
+            <main className="mt-16 mb-12 w-full mx-auto h-[calc(100vh-var(--header-height)-var(--footer-height))] overflow-y-auto">
+              <div className="flex-1 min-w-0 lg:max-w-[90%] p-4 md:p-8 peer-data-[state=collapsed]:pl-4 transition-[padding] duration-200 ease-linear">
+                {children}
+              </div>
+            </main>
             <Footer />
           </SidebarProvider>
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }
