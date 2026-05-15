@@ -5,6 +5,7 @@ import Link from "next/link"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -15,16 +16,16 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { User, Briefcase, Mail, Cpu, PanelLeftClose, PanelLeftOpen } from "lucide-react"
+import { User, Briefcase, Mail, PanelLeftClose, PanelLeftOpen } from "lucide-react"
 import { FaGithub } from "react-icons/fa"
 
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
-  { label: "Skills", href: "/skills", icon: Cpu },
   { label: "Projects", href: "/projects", icon: Briefcase },
-  { label: "Contact", href: "/contact", icon: Mail },
 ]
+
+const contactItem = { label: "Contact", href: "/contact", icon: Mail }
 
 function CollapseButton() {
   const { toggleSidebar, state } = useSidebar()
@@ -74,6 +75,19 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarSeparator className="my-1" />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip={contactItem.label} isActive={pathname === contactItem.href}>
+              <Link href={contactItem.href}>
+                <contactItem.icon />
+                <span>{contactItem.label}</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

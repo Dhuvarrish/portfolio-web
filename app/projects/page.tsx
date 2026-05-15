@@ -2,12 +2,28 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GitBranch } from "lucide-react";
 import { getProjects, type Project } from "@/app/actions";
+import { toast } from "sonner";
+import { ping } from "@/app/actions";
+import { Button } from "@/components/ui/button";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function handlePing() {
+    setLoading(true);
+    try {
+      const data = await ping();
+      toast.success(data.message, { duration: 3000 });
+    } catch {
+      toast.error("Failed to connect to backend.", { duration: 3000 });
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   useEffect(() => {
     getProjects()
@@ -18,11 +34,21 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-6">
+
+
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
           What I&apos;ve built
         </p>
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
+        <Button
+          onClick={handlePing}
+          disabled={loading}
+          size="lg"
+          className="fixed Top-16 right-6 z-50 shadow-lg"
+        >
+          {loading ? "Connecting..." : "Test Backend Connection"}
+        </Button>
       </div>
 
       {loading ? (
@@ -55,7 +81,6 @@ function ProjectCard({ project }: { project: Project }) {
         className="absolute inset-0 rounded-2xl"
         aria-label={`View ${project.title}`}
       />
-
       <div>
         <p className="font-semibold text-sm mb-1.5 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
           {project.title}
@@ -73,23 +98,6 @@ function ProjectCard({ project }: { project: Project }) {
           </span>
         ))}
       </div>
-
-      {(project.repoUrl || project.liveUrl) && (
-        /* relative + z-10 keeps these links above the overlay */
-        <div className="relative z-10 flex gap-3 pt-1 border-t border-border">
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <GitBranch className="size-3.5" />
-              Repo
-            </a>
-          )}
-        </div>
-      )}
     </div>
   );
 }

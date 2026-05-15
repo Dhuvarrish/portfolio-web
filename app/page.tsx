@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Code2, Cloud, Palette, FlaskConical, Trophy, ArrowRight, Users, ShieldCheck, Venus, Frame } from "lucide-react";
 
-const techStack = ["React", "TypeScript", "Next.js", "Node.js", "AWS", "Azure", "Docker"];
+const techStack = ["React", "TypeScript", "Next.js", "Vue.js", "Node.js", "AWS", "Azure", "Dockers", "Jest", "Vitest"];
 
 const expertise = [
   {
@@ -18,7 +18,7 @@ const expertise = [
     bg: "bg-rose-500/10 dark:bg-rose-500/15",
     iconColor: "text-rose-500",
     title: "Security & Compliance",
-    tags: ["Azure AD B2C", "RBAC", "21 CFR Part 11", "bcrypt"],
+    tags: ["Azure AD B2C", "RBAC", "Login User Flow", "21 CFR Part 11", "bcrypt"],
     description: "Auth systems, role-based access control (RBAC), and regulatory compliance.",
     cols: "",
   },
@@ -27,7 +27,7 @@ const expertise = [
     bg: "bg-blue-500/10 dark:bg-blue-500/15",
     iconColor: "text-blue-500",
     title: "Cloud & DevOps",
-    tags: ["AWS", "Azure", "Docker", "CI/CD"],
+    tags: ["AWS", "Azure", "Terraform", "CI/CD", "Database Management"],
     description: "Designed for scale and security from day one, not bolted on after.",
     cols: "",
   },

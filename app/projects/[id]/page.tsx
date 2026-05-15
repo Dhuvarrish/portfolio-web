@@ -69,6 +69,7 @@ export default function ProjectDetailPage() {
         Back to projects
       </Link>
 
+
       <div className="max-w-2xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{project.title}</h1>
