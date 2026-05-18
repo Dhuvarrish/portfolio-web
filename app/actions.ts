@@ -148,7 +148,7 @@ export async function getCars(params: { search?: string; page?: number; pageSize
 }
 
 export async function getGitHubData() {
-  const token = process.env.GITHUB_TOKEN
+  const token = process.env.GITHUB_TOKEN ?? require("next/config").default()?.serverRuntimeConfig?.GITHUB_TOKEN
   const headers: Record<string, string> = {
     "Accept": "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
