@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 10;
 
 function getPageNumbers(current: number, total: number): (number | "...")[] {
   if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1);

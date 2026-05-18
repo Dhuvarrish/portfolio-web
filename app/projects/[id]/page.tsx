@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink, GitBranch } from "lucide-react";
 import { getProject, type Project } from "@/app/actions";
 import { CarsTable } from "@/components/cars-table";
+import { UserRbacTable } from "@/components/user-rbac-table";
+import { AccessView } from "@/components/access-view";
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,13 +16,7 @@ export default function ProjectDetailPage() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    const numId = Number(id);
-    if (isNaN(numId)) {
-      setNotFound(true);
-      setLoading(false);
-      return;
-    }
-    getProject(numId)
+    getProject(id)
       .then(setProject)
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
@@ -115,7 +111,9 @@ export default function ProjectDetailPage() {
         )}
       </div>
 
-      {project.id === 1 && <CarsTable />}
+      {project.id === "db40fc5d-db43-4878-9f33-2e3f2ad2c03d" && <CarsTable />}
+      {project.id === "8f66c20f-cfd9-42ea-b3a5-eb0d640e5f4b" && <UserRbacTable />}
+      {project.id === "1524871c-c57b-44c5-94a2-107f14df3b01" && <AccessView />}
     </div>
   );
 }

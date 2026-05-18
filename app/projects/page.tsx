@@ -2,28 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom";
 import { getProjects, type Project } from "@/app/actions";
-import { toast } from "sonner";
-import { ping } from "@/app/actions";
-import { Button } from "@/components/ui/button";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState<string | null>(null);
-
-  async function handlePing() {
-    setLoading(true);
-    try {
-      const data = await ping();
-      toast.success(data.message, { duration: 3000 });
-    } catch {
-      toast.error("Failed to connect to backend.", { duration: 3000 });
-    } finally {
-      setLoading(false);
-    }
-  }
-
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     getProjects()
@@ -37,18 +24,14 @@ export default function ProjectsPage() {
 
 
       <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">
-          What I&apos;ve built
-        </p>
+
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
-        <Button
-          onClick={handlePing}
-          disabled={loading}
-          size="lg"
-          className="fixed Top-16 right-6 z-50 shadow-lg"
-        >
-          {loading ? "Connecting..." : "Test Backend Connection"}
-        </Button>
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed ">
+          These projects are a quick demo I put together to showcase my Full-Stack Development skills.
+        </p>
+        <p className="text-sm text-muted-foreground leading-relaxed ">
+          Each one connects a C# backend to a Next.js frontend.
+        </p>
       </div>
 
       {loading ? (
@@ -69,6 +52,52 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
+
+      <div className="pt-6 space-y-3">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Architecture</h1>
+        <div
+          className="rounded-2xl border border-border overflow-hidden cursor-zoom-in"
+          onClick={() => setLightboxOpen(true)}
+        >
+          <Image
+            src="/projects-architecture.png"
+            alt="Projects architecture diagram"
+            width={1200}
+            height={600}
+            className="w-full h-auto"
+          />
+        </div>
+
+        <Lightbox
+          open={lightboxOpen}
+          close={() => setLightboxOpen(false)}
+          slides={[{ src: "/projects-architecture.png" }]}
+          plugins={[ZoomPlugin]}
+          zoom={{
+            maxZoomPixelRatio: 5,
+            zoomInMultiplier: 1.5,
+            keyboardMoveDistance: 50,
+            wheelZoomDistanceFactor: 100,
+            pinchZoomDistanceFactor: 100,
+            scrollToZoom: true,
+          }}
+          carousel={{ finite: true }}
+          render={{ buttonPrev: () => null, buttonNext: () => null }}
+        />
+        <p className="text-center text-xs text-muted-foreground">Click image to zoom</p>
+        <p className="text-center text-xs text-muted-foreground pt-1">
+          Architecture diagram made with{" "}
+          <a
+            href="https://app.diagrams.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            Draw.io
+          </a>{" "}
+          — a free, open-source diagramming tool.
+        </p>
+      </div>
     </div>
   );
 }

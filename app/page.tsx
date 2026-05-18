@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Code2, Cloud, Palette, FlaskConical, Trophy, ArrowRight, Users, ShieldCheck, Venus, Frame } from "lucide-react";
 
-const techStack = ["React", "TypeScript", "Next.js", "Vue.js", "Node.js", "AWS", "Azure", "Dockers", "Jest", "Vitest"];
+const techStack = ["React", "TypeScript", "Next.js", "Vue.js", "Node.js", "Dot Net", "C#", "AWS", "Azure", "Dockers", "Jest", "Vitest"];
 
 const expertise = [
   {
@@ -9,7 +9,7 @@ const expertise = [
     bg: "bg-green-500/10 dark:bg-green-500/15",
     iconColor: "text-green-500",
     title: "Full Stack Development",
-    tags: ["React", "TypeScript", "Next.js", "Node.js", "Vue.js", "REST APIs", "UI Frameworks"],
+    tags: ["React", "TypeScript", "Next.js", "Node.js", "Vue.js", "Dot Net", "C#", "REST APIs", "UI Frameworks"],
     description: "Comfortable across the whole stack — from pixel-perfect UIs to well-structured backend services.",
     cols: "sm:col-span-2 lg:col-span-1",
   },
@@ -18,7 +18,7 @@ const expertise = [
     bg: "bg-rose-500/10 dark:bg-rose-500/15",
     iconColor: "text-rose-500",
     title: "Security & Compliance",
-    tags: ["Azure AD B2C", "RBAC", "Login User Flow", "21 CFR Part 11", "bcrypt"],
+    tags: ["Azure AD B2C", "RBAC", "Login User Flow", "21 CFR Part 11", "Bcrypt"],
     description: "Auth systems, role-based access control (RBAC), and regulatory compliance.",
     cols: "",
   },
@@ -91,7 +91,7 @@ export default function AboutPage() {
         <div>
           <p className="text-base text-muted-foreground mb-1">Hey, I&apos;m</p>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
-            <span className="bg-gradient-to-r from-green-700 via-emerald-600 to-teal-600 dark:from-green-400 dark:via-emerald-300 dark:to-teal-300 bg-clip-text text-transparent">
+            <span className="text-green-700 dark:text-green-400">
               Dhuvarrish
             </span>
           </h1>
@@ -118,9 +118,7 @@ export default function AboutPage() {
 
       {/* Expertise — bento grid */}
       <section>
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4">
-          What I&apos;m good at
-        </p>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {expertise.map((item) => (
             <div
@@ -189,7 +187,7 @@ export default function AboutPage() {
             Secretary of a student association — organising meetings, maintaining records, and
             keeping things running smoothly.
           </p>
-          <div className="flex items-start gap-3 rounded-xl border border-amber-200/70 dark:border-amber-900/40 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 p-4 mt-auto">
+          <div className="flex items-start gap-3 rounded-xl border border-amber-200/70 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/20 p-4 mt-auto">
             <div className="rounded-lg bg-amber-100 dark:bg-amber-900/40 p-2 shrink-0">
               <Trophy className="size-4 text-amber-500" />
             </div>
@@ -204,9 +202,8 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 p-6 flex flex-col justify-between gap-6">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,255,255,0.18)_0%,_transparent_65%)]" />
-          <div className="relative">
+        <section className="rounded-2xl bg-green-600 p-6 flex flex-col justify-between gap-6">
+          <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-green-200 mb-3">
               Get in touch
             </p>
@@ -220,7 +217,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/contact"
-            className="relative inline-flex items-center gap-2 rounded-xl bg-white text-green-700 px-5 py-2.5 text-sm font-semibold hover:bg-green-50 transition-colors w-fit shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl bg-white text-green-700 px-5 py-2.5 text-sm font-semibold hover:bg-green-50 transition-colors w-fit shadow-sm"
           >
             Send a message
             <ArrowRight className="size-4" />

@@ -3,7 +3,7 @@
 import { apiFetch } from "@/lib/api"
 
 export interface Project {
-  id: number
+  id: string
   title: string
   description: string
   tags: string[]
@@ -30,10 +30,6 @@ export interface PagedResult<T> {
   totalPages: number
 }
 
-export interface Skill {
-  name: string
-  category: string
-}
 
 export interface ContactPayload {
   name: string
@@ -86,16 +82,61 @@ export async function getProjects() {
   return apiFetch<Project[]>("/api/projects")
 }
 
-export async function getProject(id: number) {
+export async function getProject(id: string) {
   return apiFetch<Project>(`/api/projects/${id}`)
 }
 
-export async function getSkills() {
-  return apiFetch<Skill[]>("/api/skills")
-}
 
 export async function sendContact(body: ContactPayload) {
   return apiFetch<void>("/api/contact", { method: "POST", body: JSON.stringify(body) })
+}
+
+export interface UserEntry {
+  id: number
+  userName: string
+  email: string
+  role: string
+  roleDescription: string
+}
+
+export interface RbacRole {
+  name: string
+  description: string
+}
+
+export interface UserRolesResponse {
+  users: UserEntry[]
+  availableRoles: RbacRole[]
+  totalCount: number
+  page: number
+  pageSize: number
+  totalPages: number
+}
+
+export async function getUserRoles(params: { search?: string; sortBy?: string; sortDir?: string; page?: number; pageSize?: number } = {}) {
+  const q = new URLSearchParams()
+  if (params.search) q.set("search", params.search)
+  if (params.sortBy) q.set("sortBy", params.sortBy)
+  if (params.sortDir) q.set("sortDir", params.sortDir)
+  q.set("page", String(params.page ?? 1))
+  q.set("pageSize", String(params.pageSize ?? 8))
+  return apiFetch<UserRolesResponse>(`/api/userroles?${q.toString()}`)
+}
+
+export interface Resource {
+  id: number
+  name: string
+  category: string
+  allowedRoles: string[]
+}
+
+export interface AccessViewResponse {
+  users: UserEntry[]
+  resources: Resource[]
+}
+
+export async function getAccessView() {
+  return apiFetch<AccessViewResponse>("/api/accessview")
 }
 
 export async function getCars(params: { search?: string; page?: number; pageSize?: number }) {

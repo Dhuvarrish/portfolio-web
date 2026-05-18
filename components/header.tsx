@@ -9,14 +9,15 @@ import { Menu, User, Briefcase, Mail, Cpu } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
-  { label: "Skills", href: "/skills", icon: Cpu },
   { label: "Projects", href: "/projects", icon: Briefcase },
-  { label: "Contact", href: "/contact", icon: Mail },
 ]
+
+const contactItem = { label: "Contact", href: "/contact", icon: Mail }
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -80,6 +81,21 @@ export function Header() {
               )
             })}
           </nav>
+          <Separator />
+          <div className="p-3">
+            <Link
+              href={contactItem.href}
+              onClick={() => setMenuOpen(false)}
+              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
+                ${pathname === contactItem.href
+                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+            >
+              <contactItem.icon className="size-6 shrink-0" />
+              <span>{contactItem.label}</span>
+            </Link>
+          </div>
         </SheetContent>
       </Sheet>
     </header>
