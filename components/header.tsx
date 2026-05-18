@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { BsSun, BsMoon } from "react-icons/bs";
 import { Menu, User, Briefcase, Mail, Cpu } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
@@ -29,9 +30,21 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b-2 border-gray-300 dark:border-border bg-background">
-      <div className="flex h-full items-center justify-between px-4">
-        <span className="font-semibold tracking-tight">Dhuva</span>
-        <div className="flex items-center gap-2">
+      <div className="grid grid-cols-3 h-full items-center px-4">
+        <div />
+        <div className="flex justify-center">
+          <Link href="/" aria-label="Home">
+            <Image
+              src="/logo.png"
+              alt="Dhuva"
+              width={40}
+              height={40}
+              className="dark:invert"
+              priority
+            />
+          </Link>
+        </div>
+        <div className="flex items-center gap-2 justify-end">
           <Button
             variant="ghost"
             size="icon"

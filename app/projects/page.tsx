@@ -26,11 +26,11 @@ export default function ProjectsPage() {
       <div>
 
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed ">
-          These projects are a quick demo I put together to showcase my Full-Stack Development skills.
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+          A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js frontend to a C# .NET API, with data served from in-memory mock data — no database involved.
         </p>
-        <p className="text-sm text-muted-foreground leading-relaxed ">
-          Each one connects a C# backend to a Next.js frontend.
+        <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+          The architecture diagram below shows the full request flow, including database path. Database is not used here, but the current setup is designed to support it.
         </p>
       </div>
 
