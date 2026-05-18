@@ -183,95 +183,95 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div>
-      <h2 className="text-xl font-bold tracking-tight mb-4">Beyond the Code</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Knowledge */}
+      <section>
+        <h2 className="text-xl font-bold tracking-tight mb-4">Beyond the Code</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Knowledge */}
 
-        <section className="rounded-2xl border border-border bg-muted/30 p-5 flex flex-col gap-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Degree & achievements
-          </p>
-
-          <div className="flex items-start gap-3 rounded-xl border border-violet-200/70 dark:border-violet-900/40 bg-violet-50 dark:bg-violet-950/20 p-4">
-            <div className="rounded-lg bg-violet-100 dark:bg-violet-900/40 p-2 shrink-0">
-              <GraduationCap className="size-4 text-violet-500" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-sm font-semibold leading-snug">Master of Technology (Software Engineering)</p>
-              <p className="text-xs text-muted-foreground">Federation University Australia</p>
-              <span className="mt-1 w-fit rounded-full bg-violet-100 dark:bg-violet-900/40 px-2 py-0.5 text-xs font-medium text-violet-600 dark:text-violet-400">
-                Completed 2023
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 rounded-xl border border-sky-200/70 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/20 p-4 mt-auto">
-            <div className="rounded-lg bg-sky-100 dark:bg-sky-900/40 p-2 shrink-0">
-              <BadgeCheck className="size-4 text-sky-500" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-sm font-semibold leading-snug">Azure Fundamentals</p>
-              <p className="text-xs text-muted-foreground">Microsoft Certified · AZ-900</p>
-              <span className="mt-1 w-fit rounded-full bg-sky-100 dark:bg-sky-900/40 px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-sky-400">
-                January 2025
-              </span>
-            </div>
-          </div>
-        </section>
-
-        {/* Community involvement */}
-        <section className="rounded-2xl border border-border bg-muted/30 p-5 flex flex-col gap-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Community involvement
-          </p>
-          <div className="flex items-start gap-3 rounded-xl border border-teal-200/70 dark:border-teal-900/40 bg-teal-50 dark:bg-teal-950/20 p-4">
-            <div className="rounded-lg bg-teal-100 dark:bg-teal-900/40 p-2 shrink-0">
-              <Users className="size-4 text-teal-500" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-sm font-semibold leading-snug">Secretary, BARS Student Club</p>
-              <p className="text-xs text-muted-foreground">2021 - 2023</p>
-              <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
-                Organised meetings, maintained records, and kept club operations running smoothly over two years.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3 rounded-xl border border-amber-200/70 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/20 p-4">
-            <div className="rounded-lg bg-amber-100 dark:bg-amber-900/40 p-2 shrink-0">
-              <Trophy className="size-4 text-amber-500" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-sm font-semibold leading-snug">City of Ballarat - Youth Awards</p>
-              <p className="text-xs text-muted-foreground">Winner 2022</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Awarded for outstanding leadership and contribution to the student community.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Get in touch */}
-        <section className="rounded-2xl bg-green-600 p-6 flex flex-col justify-between gap-6">
-          <div>
-            <h1 className="font-semibold uppercase text-green-200 mb-3 align-middle tracking-wide">
-              Get in touch
-            </h1>
-            <p className="text-sm text-green-100 leading-relaxed">
-              I’m open to new opportunities and happy to have a conversation if there’s a good fit.
+          <section className="rounded-2xl border border-border bg-muted/30 p-5 flex flex-col gap-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Degree & achievements
             </p>
-          </div>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-white text-green-700 px-5 py-2.5 text-sm font-semibold hover:bg-green-50 transition-colors w-fit shadow-sm"
-          >
-            Send a message
-            <ArrowRight className="size-4" />
-          </Link>
-        </section>
 
-      </div>
-      </div>
+            <div className="flex items-start gap-3 rounded-xl border border-violet-200/70 dark:border-violet-900/40 bg-violet-50 dark:bg-violet-950/20 p-4">
+              <div className="rounded-lg bg-violet-100 dark:bg-violet-900/40 p-2 shrink-0">
+                <GraduationCap className="size-4 text-violet-500" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-semibold leading-snug">Master of Technology (Software Engineering)</p>
+                <p className="text-xs text-muted-foreground">Federation University Australia</p>
+                <span className="mt-1 w-fit rounded-full bg-violet-100 dark:bg-violet-900/40 px-2 py-0.5 text-xs font-medium text-violet-600 dark:text-violet-400">
+                  Completed 2023
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 rounded-xl border border-sky-200/70 dark:border-sky-900/40 bg-sky-50 dark:bg-sky-950/20 p-4 mt-auto">
+              <div className="rounded-lg bg-sky-100 dark:bg-sky-900/40 p-2 shrink-0">
+                <BadgeCheck className="size-4 text-sky-500" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-semibold leading-snug">Azure Fundamentals</p>
+                <p className="text-xs text-muted-foreground">Microsoft Certified · AZ-900</p>
+                <span className="mt-1 w-fit rounded-full bg-sky-100 dark:bg-sky-900/40 px-2 py-0.5 text-xs font-medium text-sky-600 dark:text-sky-400">
+                  January 2025
+                </span>
+              </div>
+            </div>
+          </section>
+
+          {/* Community involvement */}
+          <section className="rounded-2xl border border-border bg-muted/30 p-5 flex flex-col gap-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Community involvement
+            </p>
+            <div className="flex items-start gap-3 rounded-xl border border-teal-200/70 dark:border-teal-900/40 bg-teal-50 dark:bg-teal-950/20 p-4">
+              <div className="rounded-lg bg-teal-100 dark:bg-teal-900/40 p-2 shrink-0">
+                <Users className="size-4 text-teal-500" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-semibold leading-snug">Secretary, BARS Student Club</p>
+                <p className="text-xs text-muted-foreground">2021 - 2023</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
+                  Organised meetings, maintained records, and kept club operations running smoothly over two years.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 rounded-xl border border-amber-200/70 dark:border-amber-900/40 bg-amber-50 dark:bg-amber-950/20 p-4">
+              <div className="rounded-lg bg-amber-100 dark:bg-amber-900/40 p-2 shrink-0">
+                <Trophy className="size-4 text-amber-500" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm font-semibold leading-snug">City of Ballarat - Youth Awards</p>
+                <p className="text-xs text-muted-foreground">Winner 2022</p>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                  Awarded for outstanding leadership and contribution to the student community.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      {/* Get in touch */}
+      <section className="w-fit rounded-2xl bg-green-600 p-6 flex flex-col justify-between gap-6">
+        <div>
+          <h1 className="font-semibold uppercase text-green-200 mb-3 align-middle tracking-wide">
+            Get in touch
+          </h1>
+          <p className="text-sm text-green-100 leading-relaxed">
+            I’m open to new opportunities and happy to have a conversation if there’s a good fit.
+          </p>
+        </div>
+        <Link
+          href="/contact"
+          className="inline-flex items-center gap-2 rounded-xl bg-white text-green-700 px-5 py-2.5 text-sm font-semibold hover:bg-green-50 transition-colors w-fit shadow-
+sm"
+        >
+          Send a message
+          <ArrowRight className="size-4" />
+        </Link>
+      </section>
     </div>
   );
 }
