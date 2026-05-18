@@ -3,9 +3,6 @@ const nextConfig = {
   turbopack: {
     root: __dirname,
   },
-  serverRuntimeConfig: {
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-  },
   images: {
     remotePatterns: [
       {
