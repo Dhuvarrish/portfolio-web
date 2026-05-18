@@ -3,6 +3,8 @@ import { ExternalLink, BookOpen, Lock } from "lucide-react"
 import { ContributionGrid } from "@/components/contribution-grid"
 import { getGitHubData } from "@/app/actions"
 
+export const dynamic = "force-dynamic"
+
 export default async function GithubPage() {
   const { user, repos, contributions, totalContributions } = await getGitHubData()
 
