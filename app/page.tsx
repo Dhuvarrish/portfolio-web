@@ -78,7 +78,7 @@ export default function AboutPage() {
   return (
     <div className="w-full space-y-14">
 
-      {/* Hero */}
+      {/* Image */}
       <section className="flex flex-col sm:flex-row sm:items-stretch gap-8">
         <div className="relative w-48 h-80 rounded-2xl overflow-hidden ring-2 ring-border ">
           <Image
@@ -127,7 +127,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Expertise — bento grid */}
+      {/* Expertise */}
       <section>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -160,7 +160,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Approach — 3-col cards */}
+      {/* Approach */}
       <section>
         <h2 className="text-xl font-bold tracking-tight mb-4">My Approach</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -186,11 +186,10 @@ export default function AboutPage() {
       <section>
         <h2 className="text-xl font-bold tracking-tight mb-4">Beyond the Code</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Knowledge */}
-
+          {/* Degree & Achievements */}
           <section className="rounded-2xl border border-border bg-muted/30 p-5 flex flex-col gap-4">
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Degree & achievements
+              Degree & Achievements
             </p>
 
             <div className="flex items-start gap-3 rounded-xl border border-violet-200/70 dark:border-violet-900/40 bg-violet-50 dark:bg-violet-950/20 p-4">
