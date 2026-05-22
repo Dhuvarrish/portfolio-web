@@ -1,5 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link"
+import Image from "next/image"
 import {
   Code2,
   Cloud,
@@ -11,8 +11,8 @@ import {
   ShieldCheck,
   GraduationCap,
   BadgeCheck,
-} from "lucide-react";
-import { TechStackIcons } from "@/components/tech-stack-icons";
+} from "lucide-react"
+import { TechStackIcons } from "@/components/tech-stack-icons"
 
 const expertise = [
   {
@@ -47,66 +47,54 @@ const expertise = [
     tags: ["AWS", "Azure", "Terraform", "CI/CD", "Database Management"],
     description: "From CI/CD pipelines to cloud infrastructure — setting up and maintaining scalable environments.",
   },
-];
+]
 
 const approach = [
   {
     icon: Users,
     title: "Collaborative by nature",
     description:
-      "I enjoy jumping into architectural discussions, asking \"why\" before \"how\", and working in Agile teams where feedback loops are short.",
+      'I enjoy jumping into architectural discussions, asking "why" before "how", and working in Agile teams where feedback loops are short.',
   },
   {
     icon: ShieldCheck,
     title: "Security-aware",
-    description:
-      "Access control, auth flows, and compliance are things I think about alongside features, not after.",
+    description: "Access control, auth flows, and compliance are things I think about alongside features, not after.",
   },
   {
     icon: Palette,
     title: "UI/UX focused",
-    description:
-      "Whether it's a quick prototype or an enterprise system, I try to create interfaces that feel nice to use.",
+    description: "Whether it's a quick prototype or an enterprise system, I try to create interfaces that feel nice to use.",
   },
   {
     icon: Code2,
     title: "Clean, readable code",
-    description:
-      "Clear names, simple logic, minimal comments — code that a future maintainer can pick up without a tour.",
+    description: "Clear names, simple logic, minimal comments — code that a future maintainer can pick up without a tour.",
   },
-];
+]
 
 export default function AboutPage() {
   return (
     <div className="w-full space-y-14">
-
       {/* Hero */}
       <section className="flex flex-col sm:flex-row sm:items-stretch gap-8">
         <div className="relative w-48 h-80 rounded-xl overflow-hidden ring-2 ring-border shrink-0">
-          <Image
-            src="/me.jpg"
-            alt="Dhuvarrish"
-            fill
-            className="object-cover"
-            priority
-          />
+          <Image src="/me.jpg" alt="Dhuvarrish" fill className="object-cover" priority />
         </div>
 
         <div className="space-y-5">
           <div>
             <p className="text-base text-muted-foreground mb-1">Hey, I&apos;m</p>
             <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
-              <span className="text-white">
-                Dhuvarrish
-              </span>
+              <span className="text-white">Dhuvarrish</span>
             </h1>
             <p className="mt-2 text-lg font-medium text-muted-foreground">Full Stack Developer</p>
           </div>
 
           <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-4xl">
-            I build web applications ranging from simple tools to complex systems, with a focus on making them reliable
-            and easy to use. I enjoy writing clean code, designing intuitive interfaces, and turning complex problems
-            into straightforward solutions — whether that&apos;s in the frontend, backend, or cloud infrastructure.
+            I build web applications ranging from simple tools to complex systems, with a focus on making them reliable and easy to
+            use. I enjoy writing clean code, designing intuitive interfaces, and turning complex problems into straightforward
+            solutions — whether that&apos;s in the frontend, backend, or cloud infrastructure.
           </p>
 
           <TechStackIcons />
@@ -117,25 +105,17 @@ export default function AboutPage() {
       <section>
         <div className="divide-y divide-border border border-border rounded-lg overflow-hidden">
           {expertise.map((item) => (
-            <div
-              key={item.title}
-              className="flex items-start gap-4 px-5 py-4 bg-background hover:bg-muted/20 transition-colors"
-            >
+            <div key={item.title} className="flex items-start gap-4 px-5 py-4 bg-background hover:bg-muted/20 transition-colors">
               <div className={`inline-flex rounded-md ${item.bg} p-2 shrink-0 mt-0.5`}>
                 <item.icon className={`size-4 ${item.iconColor}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5 hidden sm:block">
-                  {item.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5 hidden sm:block">{item.description}</p>
               </div>
               <div className="hidden sm:flex flex-wrap gap-1.5 justify-end max-w-[44%]">
                 {item.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border"
-                  >
+                  <span key={tag} className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
                     {tag}
                   </span>
                 ))}
@@ -154,9 +134,7 @@ export default function AboutPage() {
               <item.icon className="size-4 shrink-0 mt-0.5 text-muted-foreground" />
               <div>
                 <p className="font-medium text-sm">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-                  {item.description}
-                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-1">{item.description}</p>
               </div>
             </div>
           ))}
@@ -168,35 +146,27 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold tracking-tight mb-6">Beyond the Code</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-5">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Education &amp; Certifications
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Education &amp; Certifications</p>
             <div className="space-y-5">
               <div className="flex items-start gap-3">
                 <GraduationCap className="size-4 text-violet-500 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-semibold">Master of Technology (Software Engineering)</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Federation University Australia · Completed 2023
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Federation University Australia · Completed 2023</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <BadgeCheck className="size-4 text-sky-500 shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-semibold">Azure Fundamentals</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Microsoft Certified · AZ-900 · January 2025
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Microsoft Certified · AZ-900 · January 2025</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="space-y-5">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Community
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Community</p>
             <div className="space-y-5">
               <div className="flex items-start gap-3">
                 <Users className="size-4 text-teal-500 shrink-0 mt-0.5" />
@@ -238,7 +208,6 @@ export default function AboutPage() {
           </Link>
         </div>
       </section>
-
     </div>
-  );
+  )
 }

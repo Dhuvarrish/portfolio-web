@@ -20,11 +20,7 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { User, Briefcase, Mail, PanelLeftClose, PanelLeftOpen, Info } from "lucide-react"
 import { FaGithub } from "react-icons/fa"
 
@@ -36,7 +32,7 @@ const projectsChildren = [
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
-  { label: "Info", href: "/info", icon: Info }
+  { label: "Info", href: "/info", icon: Info },
 ]
 
 const contactItem = { label: "Contact", href: "/contact", icon: Mail }
@@ -50,10 +46,11 @@ function CollapseButton() {
       title={isExpanded ? "Collapse" : "Expand"}
       className="flex h-11 w-full items-center gap-2 rounded-md px-2 text-lg font-medium text-green-500 transition-colors hover:bg-green-950 hover:text-green-300 group-data-[collapsible=icon]:pl-2"
     >
-      {isExpanded
-        ? <PanelLeftClose className="size-5 shrink-0 text-green-500" />
-        : <PanelLeftOpen className="size-5 shrink-0 text-green-500" />
-      }
+      {isExpanded ? (
+        <PanelLeftClose className="size-5 shrink-0 text-green-500" />
+      ) : (
+        <PanelLeftOpen className="size-5 shrink-0 text-green-500" />
+      )}
       <span className="truncate">Collapse</span>
     </button>
   )

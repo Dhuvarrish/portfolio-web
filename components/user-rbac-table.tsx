@@ -1,29 +1,16 @@
-"use client";
+"use client"
 
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Pencil, Search, ShieldAlert } from "lucide-react";
-import { getUserRoles, type UserEntry, type RbacRole } from "@/app/actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useDebounce } from "@/hooks/use-debounce";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useState } from "react"
+import { toast } from "sonner"
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Pencil, Search, ShieldAlert } from "lucide-react"
+import { getUserRoles } from "@/app/actions"
+import type { UserEntry, RbacRole } from "@/lib/types"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useDebounce } from "@/hooks/use-debounce"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 
 const roleBadgeColors: Record<string, string> = {
   Admin: "bg-red-500/10 text-red-600 ring-red-500/20 dark:text-red-400",
@@ -31,84 +18,79 @@ const roleBadgeColors: Record<string, string> = {
   Developer: "bg-green-500/10 text-green-600 ring-green-500/20 dark:text-green-400",
   Viewer: "bg-gray-500/10 text-gray-600 ring-gray-500/20 dark:text-gray-400",
   Auditor: "bg-yellow-500/10 text-yellow-600 ring-yellow-500/20 dark:text-yellow-400",
-};
+}
 
-type SortKey = "userName" | "email" | "role";
-type SortDir = "asc" | "desc";
+type SortKey = "userName" | "email" | "role"
+type SortDir = "asc" | "desc"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 function getPageNumbers(current: number, total: number): (number | "...")[] {
-  if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1);
-  const left = Math.max(2, current - 1);
-  const right = Math.min(total - 1, current + 1);
-  const items: (number | "...")[] = [1];
-  if (left > 2) items.push("...");
-  for (let i = left; i <= right; i++) items.push(i);
-  if (right < total - 1) items.push("...");
-  items.push(total);
-  return items;
+  if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1)
+  const left = Math.max(2, current - 1)
+  const right = Math.min(total - 1, current + 1)
+  const items: (number | "...")[] = [1]
+  if (left > 2) items.push("...")
+  for (let i = left; i <= right; i++) items.push(i)
+  if (right < total - 1) items.push("...")
+  items.push(total)
+  return items
 }
 
 function RoleBadge({ role }: { role: string }) {
-  const cls = roleBadgeColors[role] ?? "bg-muted text-muted-foreground ring-border";
-  return (
-    <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium ring-1", cls)}>
-      {role}
-    </span>
-  );
+  const cls = roleBadgeColors[role] ?? "bg-muted text-muted-foreground ring-border"
+  return <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium ring-1", cls)}>{role}</span>
 }
 
 export function UserRbacTable() {
-  const [users, setUsers] = useState<UserEntry[]>([]);
-  const [availableRoles, setAvailableRoles] = useState<RbacRole[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 400);
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [sortKey, setSortKey] = useState<SortKey>("userName");
-  const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [users, setUsers] = useState<UserEntry[]>([])
+  const [availableRoles, setAvailableRoles] = useState<RbacRole[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+  const debouncedSearch = useDebounce(search, 400)
+  const [page, setPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(1)
+  const [sortKey, setSortKey] = useState<SortKey>("userName")
+  const [sortDir, setSortDir] = useState<SortDir>("asc")
 
-  const [editingUser, setEditingUser] = useState<UserEntry | null>(null);
-  const [selectedRole, setSelectedRole] = useState("");
-  const [open, setOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<UserEntry | null>(null)
+  const [selectedRole, setSelectedRole] = useState("")
+  const [open, setOpen] = useState(false)
 
   const fetchUsers = useCallback(() => {
-    setLoading(true);
+    setLoading(true)
     getUserRoles({ search: debouncedSearch, sortBy: sortKey, sortDir, page, pageSize: PAGE_SIZE })
       .then((data) => {
-        setUsers(data.users);
-        setAvailableRoles(data.availableRoles);
-        setTotalCount(data.totalCount);
-        setTotalPages(data.totalPages);
+        setUsers(data.users)
+        setAvailableRoles(data.availableRoles)
+        setTotalCount(data.totalCount)
+        setTotalPages(data.totalPages)
       })
       .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [debouncedSearch, sortKey, sortDir, page]);
+      .finally(() => setLoading(false))
+  }, [debouncedSearch, sortKey, sortDir, page])
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchUsers()
+  }, [fetchUsers])
 
   useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch, sortKey, sortDir]);
+    setPage(1)
+  }, [debouncedSearch, sortKey, sortDir])
 
   function handleEditOpen(user: UserEntry) {
-    setEditingUser(user);
-    setSelectedRole(user.role);
-    setOpen(true);
+    setEditingUser(user)
+    setSelectedRole(user.role)
+    setOpen(true)
   }
 
   function handleSave() {
-    if (!editingUser) return;
+    if (!editingUser) return
 
-    const previousRole = editingUser.role;
-    const newRole = selectedRole;
-    const newDescription =
-      availableRoles.find((r) => r.name === newRole)?.description ?? editingUser.roleDescription;
+    const previousRole = editingUser.role
+    const newRole = selectedRole
+    const newDescription = availableRoles.find((r) => r.name === newRole)?.description ?? editingUser.roleDescription
 
     console.log("[RBAC] Permission change:", {
       userId: editingUser.id,
@@ -118,38 +100,29 @@ export function UserRbacTable() {
       newRole,
       newDescription,
       changedAt: new Date().toISOString(),
-    });
+    })
 
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === editingUser.id
-          ? { ...u, role: newRole, roleDescription: newDescription }
-          : u
-      )
-    );
-    toast.success(`${editingUser.userName}'s role updated to ${newRole}.`);
-    setOpen(false);
+    setUsers((prev) => prev.map((u) => (u.id === editingUser.id ? { ...u, role: newRole, roleDescription: newDescription } : u)))
+    toast.success(`${editingUser.userName}'s role updated to ${newRole}.`)
+    setOpen(false)
   }
 
-  const selectedRoleDescription =
-    availableRoles.find((r) => r.name === selectedRole)?.description ?? "";
+  const selectedRoleDescription = availableRoles.find((r) => r.name === selectedRole)?.description ?? ""
 
-  const isDirty = selectedRole !== editingUser?.role;
+  const isDirty = selectedRole !== editingUser?.role
 
   function handleSort(key: SortKey) {
     if (sortKey === key) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"))
     } else {
-      setSortKey(key);
-      setSortDir("asc");
+      setSortKey(key)
+      setSortDir("asc")
     }
   }
 
   function SortIcon({ col }: { col: SortKey }) {
-    if (sortKey !== col) return <ArrowUpDown className="size-3.5 opacity-40" />;
-    return sortDir === "asc"
-      ? <ArrowUp className="size-3.5" />
-      : <ArrowDown className="size-3.5" />;
+    if (sortKey !== col) return <ArrowUpDown className="size-3.5 opacity-40" />
+    return sortDir === "asc" ? <ArrowUp className="size-3.5" /> : <ArrowDown className="size-3.5" />
   }
 
   return (
@@ -169,17 +142,26 @@ export function UserRbacTable() {
           <TableHeader>
             <TableRow className="hover:bg-transparent">
               <TableHead>
-                <button onClick={() => handleSort("userName")} className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors">
+                <button
+                  onClick={() => handleSort("userName")}
+                  className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors"
+                >
                   User <SortIcon col="userName" />
                 </button>
               </TableHead>
               <TableHead>
-                <button onClick={() => handleSort("email")} className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors">
+                <button
+                  onClick={() => handleSort("email")}
+                  className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors"
+                >
                   Email <SortIcon col="email" />
                 </button>
               </TableHead>
               <TableHead>
-                <button onClick={() => handleSort("role")} className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors">
+                <button
+                  onClick={() => handleSort("role")}
+                  className="inline-flex items-center gap-1.5 font-medium hover:text-foreground transition-colors"
+                >
                   Role <SortIcon col="role" />
                 </button>
               </TableHead>
@@ -216,12 +198,7 @@ export function UserRbacTable() {
                     {user.roleDescription}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-1.5"
-                      onClick={() => handleEditOpen(user)}
-                    >
+                    <Button variant="outline" size="sm" className="gap-1.5" onClick={() => handleEditOpen(user)}>
                       <Pencil className="size-3.5" />
                       Edit
                     </Button>
@@ -252,7 +229,10 @@ export function UserRbacTable() {
             <div className="flex gap-1">
               {getPageNumbers(page, totalPages).map((p, i) =>
                 p === "..." ? (
-                  <span key={`ellipsis-${i}`} className="h-8 w-6 flex items-center justify-center text-xs text-muted-foreground select-none">
+                  <span
+                    key={`ellipsis-${i}`}
+                    className="h-8 w-6 flex items-center justify-center text-xs text-muted-foreground select-none"
+                  >
                     &hellip;
                   </span>
                 ) : (
@@ -260,10 +240,9 @@ export function UserRbacTable() {
                     key={p}
                     onClick={() => setPage(p)}
                     disabled={loading}
-                    className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${p === page
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted text-muted-foreground"
-                      }`}
+                    className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${
+                      p === page ? "bg-primary text-primary-foreground" : "hover:bg-muted text-muted-foreground"
+                    }`}
                   >
                     {p}
                   </button>
@@ -295,9 +274,8 @@ export function UserRbacTable() {
             <div className="flex gap-2.5 rounded-lg border border-yellow-500/30 bg-yellow-500/5 p-3.5">
               <ShieldAlert className="mt-0.5 size-4 shrink-0 text-yellow-600 dark:text-yellow-400" />
               <p className="text-xs leading-relaxed text-yellow-700 dark:text-yellow-300">
-                <span className="font-semibold">Note:</span> Due to security reasons, only local
-                state is updated and permission changes are console logged. No requests are made to
-                the backend on saving this form.
+                <span className="font-semibold">Note:</span> Due to security reasons, only local state is updated and permission
+                changes are console logged. No requests are made to the backend on saving this form.
               </p>
             </div>
 
@@ -336,9 +314,7 @@ export function UserRbacTable() {
               </select>
 
               {selectedRoleDescription && (
-                <p className="text-xs text-muted-foreground leading-relaxed pl-0.5">
-                  {selectedRoleDescription}
-                </p>
+                <p className="text-xs text-muted-foreground leading-relaxed pl-0.5">{selectedRoleDescription}</p>
               )}
             </div>
           </div>
@@ -356,5 +332,5 @@ export function UserRbacTable() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

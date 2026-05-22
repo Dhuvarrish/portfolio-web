@@ -12,13 +12,5 @@ const sizeMap = {
 }
 
 export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) {
-  return (
-    <div
-      className={cn(
-        "animate-spin rounded-full border-muted border-t-foreground",
-        sizeMap[size],
-        className
-      )}
-    />
-  )
+  return <div className={cn("animate-spin rounded-full border-muted border-t-foreground", sizeMap[size], className)} />
 }

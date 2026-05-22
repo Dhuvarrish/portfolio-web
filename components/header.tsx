@@ -1,17 +1,17 @@
 "use client"
 
-import { useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { BsSun, BsMoon } from "react-icons/bs";
-import { Menu, User, Briefcase, Mail, ChevronRight, Info, FileText } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useState } from "react"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
+import Image from "next/image"
+import { BsSun, BsMoon } from "react-icons/bs"
+import { Menu, User, Briefcase, Mail, ChevronRight, Info, FileText } from "lucide-react"
+import { FaGithub, FaLinkedin } from "react-icons/fa"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 const navItems = [
   { label: "About", href: "/", icon: User },
@@ -28,11 +28,10 @@ const infoItem = { label: "Info", href: "/info", icon: Info }
 const contactItem = { label: "Contact", href: "/contact", icon: Mail }
 
 export function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href))
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-border bg-background">
@@ -86,11 +85,7 @@ export function Header() {
               <DialogHeader className="flex flex-row items-center justify-between px-5 py-3 border-b border-border shrink-0">
                 <DialogTitle className="text-sm font-medium">Resume</DialogTitle>
               </DialogHeader>
-              <embed
-                src="/resume.pdf"
-                type="application/pdf"
-                className="w-full flex-1 rounded-b-2xl"
-              />
+              <embed src="/resume.pdf" type="application/pdf" className="w-full flex-1 rounded-b-2xl" />
             </DialogContent>
           </Dialog>
           <Button
@@ -116,10 +111,11 @@ export function Header() {
                 key={item.label}
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${isActive(item.href)
-                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${
+                  isActive(item.href)
+                    ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
               >
                 <item.icon className="size-6 shrink-0" />
                 <span>{item.label}</span>
@@ -127,10 +123,12 @@ export function Header() {
             ))}
 
             <Collapsible defaultOpen={pathname.startsWith("/projects")} className="group/collapsible">
-              <CollapsibleTrigger className={`flex w-full items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
-                ${pathname.startsWith("/projects")
-                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              <CollapsibleTrigger
+                className={`flex w-full items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
+                ${
+                  pathname.startsWith("/projects")
+                    ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <Briefcase className="size-6 shrink-0" />
@@ -145,9 +143,10 @@ export function Header() {
                       href={child.href}
                       onClick={() => setMenuOpen(false)}
                       className={`flex items-center rounded-xl px-5 py-4 text-lg font-medium transition-colors
-                        ${pathname === child.href
-                          ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ${
+                          pathname === child.href
+                            ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
                         }`}
                     >
                       {child.label}
@@ -160,10 +159,11 @@ export function Header() {
             <Link
               href={infoItem.href}
               onClick={() => setMenuOpen(false)}
-              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${isActive(infoItem.href)
-                ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
+              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${
+                isActive(infoItem.href)
+                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
             >
               <infoItem.icon className="size-6 shrink-0" />
               <span>{infoItem.label}</span>
@@ -174,10 +174,11 @@ export function Header() {
             <Link
               href={contactItem.href}
               onClick={() => setMenuOpen(false)}
-              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${isActive(contactItem.href)
-                ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
+              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${
+                isActive(contactItem.href)
+                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
             >
               <contactItem.icon className="size-6 shrink-0" />
               <span>{contactItem.label}</span>
@@ -186,5 +187,5 @@ export function Header() {
         </SheetContent>
       </Sheet>
     </header>
-  );
+  )
 }

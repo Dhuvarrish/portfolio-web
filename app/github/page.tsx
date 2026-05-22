@@ -9,7 +9,7 @@ export default async function GithubPage() {
   const { user, repos, contributions, totalContributions } = await getGitHubData()
 
   const currentYear = new Date().getFullYear()
-  const currentYearContributions = contributions.filter(d => d.date.startsWith(`${currentYear}-`))
+  const currentYearContributions = contributions.filter((d) => d.date.startsWith(`${currentYear}-`))
 
   return (
     <>
@@ -38,7 +38,9 @@ export default async function GithubPage() {
       </div>
 
       <div className="flex flex-wrap gap-4 md:gap-6 mb-6 md:mb-8 text-sm text-muted-foreground">
-        <span className="flex items-center gap-1"><BookOpen className="size-4" /> {repos.length} repos</span>
+        <span className="flex items-center gap-1">
+          <BookOpen className="size-4" /> {repos.length} repos
+        </span>
       </div>
 
       <ContributionGrid contributions={currentYearContributions} total={totalContributions} />

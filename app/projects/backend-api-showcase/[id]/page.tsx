@@ -1,26 +1,27 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft, ExternalLink, GitBranch } from "lucide-react";
-import { getProject, type Project } from "@/app/actions";
-import { CarsTable } from "@/components/cars-table";
-import { UserRbacTable } from "@/components/user-rbac-table";
-import { AccessView } from "@/components/access-view";
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import Link from "next/link"
+import { ArrowLeft, ExternalLink, GitBranch } from "lucide-react"
+import { getProject } from "@/app/actions"
+import type { Project } from "@/lib/types"
+import { CarsTable } from "@/components/cars-table"
+import { UserRbacTable } from "@/components/user-rbac-table"
+import { AccessView } from "@/components/access-view"
 
 export default function ProjectDetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const [project, setProject] = useState<Project | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const { id } = useParams<{ id: string }>()
+  const [project, setProject] = useState<Project | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     getProject(id)
       .then(setProject)
       .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
-  }, [id]);
+      .finally(() => setLoading(false))
+  }, [id])
 
   if (loading) {
     return (
@@ -37,7 +38,7 @@ export default function ProjectDetailPage() {
           ))}
         </div>
       </div>
-    );
+    )
   }
 
   if (notFound || !project) {
@@ -52,7 +53,7 @@ export default function ProjectDetailPage() {
         </Link>
         <p className="text-muted-foreground text-sm">Project not found.</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -65,7 +66,6 @@ export default function ProjectDetailPage() {
         Back to projects
       </Link>
 
-
       <div className="max-w-2xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{project.title}</h1>
@@ -74,10 +74,7 @@ export default function ProjectDetailPage() {
 
         <div className="flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border"
-            >
+            <span key={tag} className="rounded bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border">
               {tag}
             </span>
           ))}
@@ -115,5 +112,5 @@ export default function ProjectDetailPage() {
       {project.id === "8f66c20f-cfd9-42ea-b3a5-eb0d640e5f4b" && <UserRbacTable />}
       {project.id === "1524871c-c57b-44c5-94a2-107f14df3b01" && <AccessView />}
     </div>
-  );
+  )
 }

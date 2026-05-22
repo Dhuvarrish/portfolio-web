@@ -1,46 +1,43 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Lightbox from "yet-another-react-lightbox";
-import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom";
-import { getProjects, type Project } from "@/app/actions";
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import Lightbox from "yet-another-react-lightbox"
+import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom"
+import { getProjects } from "@/app/actions"
+import type { Project } from "@/lib/types"
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   useEffect(() => {
     getProjects()
       .then(setProjects)
       .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <div className="space-y-6">
-
-
       <div>
-
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
         <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-          A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js frontend to a C# .NET API, with data served from backend mock data — no database involved.
+          A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js
+          frontend to a C# .NET API, with data served from backend mock data — no database involved.
         </p>
         <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-          The architecture diagram below shows the full request flow, including database path. Database is not used here, but the current setup is designed to support it.
+          The architecture diagram below shows the full request flow, including database path. Database is not used here, but the
+          current setup is designed to support it.
         </p>
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-border bg-muted/30 p-5 h-40 animate-pulse"
-            />
+            <div key={i} className="rounded-2xl border border-border bg-muted/30 p-5 h-40 animate-pulse" />
           ))}
         </div>
       ) : projects.length === 0 ? (
@@ -55,10 +52,7 @@ export default function ProjectsPage() {
 
       <div className="pt-6 space-y-3">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Architecture</h1>
-        <div
-          className="rounded-2xl border border-border overflow-hidden cursor-zoom-in"
-          onClick={() => setLightboxOpen(true)}
-        >
+        <div className="rounded-2xl border border-border overflow-hidden cursor-zoom-in" onClick={() => setLightboxOpen(true)}>
           <Image
             src="/projects-architecture.png"
             alt="Projects architecture diagram"
@@ -98,7 +92,7 @@ export default function ProjectsPage() {
         </p>
       </div>
     </div>
-  );
+  )
 }
 
 function ProjectCard({ project }: { project: Project }) {
@@ -118,14 +112,11 @@ function ProjectCard({ project }: { project: Project }) {
 
       <div className="flex flex-wrap gap-1.5 mt-auto pt-1">
         {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border"
-          >
+          <span key={tag} className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
             {tag}
           </span>
         ))}
       </div>
     </div>
-  );
+  )
 }

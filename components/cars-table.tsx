@@ -1,32 +1,26 @@
-"use client";
+"use client"
 
-import { useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
-import { getCars, type Car, type PagedResult } from "@/app/actions";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useDebounce } from "@/hooks/use-debounce";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { useEffect, useState, useCallback } from "react"
+import { ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { getCars } from "@/app/actions"
+import type { Car, PagedResult } from "@/lib/types"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { useDebounce } from "@/hooks/use-debounce"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 function getPageNumbers(current: number, total: number): (number | "...")[] {
-  if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1);
-  const left = Math.max(2, current - 1);
-  const right = Math.min(total - 1, current + 1);
-  const items: (number | "...")[] = [1];
-  if (left > 2) items.push("...");
-  for (let i = left; i <= right; i++) items.push(i);
-  if (right < total - 1) items.push("...");
-  items.push(total);
-  return items;
+  if (total <= 3) return Array.from({ length: total }, (_, i) => i + 1)
+  const left = Math.max(2, current - 1)
+  const right = Math.min(total - 1, current + 1)
+  const items: (number | "...")[] = [1]
+  if (left > 2) items.push("...")
+  for (let i = left; i <= right; i++) items.push(i)
+  if (right < total - 1) items.push("...")
+  items.push(total)
+  return items
 }
 
 const colorMap: Record<string, string> = {
@@ -40,16 +34,16 @@ const colorMap: Record<string, string> = {
   green: "bg-green-500",
   orange: "bg-orange-500",
   yellow: "bg-yellow-400",
-};
+}
 
 function ColorDot({ color }: { color: string }) {
-  const cls = colorMap[color.toLowerCase()] ?? "bg-muted border border-border";
+  const cls = colorMap[color.toLowerCase()] ?? "bg-muted border border-border"
   return (
     <span className="inline-flex items-center gap-1.5">
       <span className={`inline-block size-3 rounded-full ${cls}`} />
       <span className="text-sm">{color}</span>
     </span>
-  );
+  )
 }
 
 function formatPrice(price: number) {
@@ -57,31 +51,31 @@ function formatPrice(price: number) {
     style: "currency",
     currency: "AUD",
     maximumFractionDigits: 0,
-  }).format(price);
+  }).format(price)
 }
 
 export function CarsTable() {
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 400);
-  const [page, setPage] = useState(1);
-  const [carsResult, setCarsResult] = useState<PagedResult<Car> | null>(null);
-  const [carsLoading, setCarsLoading] = useState(true);
+  const [search, setSearch] = useState("")
+  const debouncedSearch = useDebounce(search, 400)
+  const [page, setPage] = useState(1)
+  const [carsResult, setCarsResult] = useState<PagedResult<Car> | null>(null)
+  const [carsLoading, setCarsLoading] = useState(true)
 
   const fetchCars = useCallback(() => {
-    setCarsLoading(true);
+    setCarsLoading(true)
     getCars({ search: debouncedSearch, page, pageSize: PAGE_SIZE })
       .then(setCarsResult)
       .catch(console.error)
-      .finally(() => setCarsLoading(false));
-  }, [debouncedSearch, page]);
+      .finally(() => setCarsLoading(false))
+  }, [debouncedSearch, page])
 
   useEffect(() => {
-    fetchCars();
-  }, [fetchCars]);
+    fetchCars()
+  }, [fetchCars])
 
   useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch]);
+    setPage(1)
+  }, [debouncedSearch])
 
   return (
     <div className="space-y-5">
@@ -142,9 +136,7 @@ export function CarsTable() {
                   <TableCell>
                     <ColorDot color={car.color} />
                   </TableCell>
-                  <TableCell className="text-right font-medium">
-                    {formatPrice(car.price)}
-                  </TableCell>
+                  <TableCell className="text-right font-medium">{formatPrice(car.price)}</TableCell>
                 </TableRow>
               ))
             )}
@@ -156,8 +148,8 @@ export function CarsTable() {
       {carsResult && carsResult.totalPages > 1 && (
         <div className="flex flex-col gap-4">
           <p className="text-xs text-muted-foreground">
-            {carsResult.totalCount} result{carsResult.totalCount !== 1 ? "s" : ""} &mdash; page{" "}
-            {carsResult.page} of {carsResult.totalPages}
+            {carsResult.totalCount} result{carsResult.totalCount !== 1 ? "s" : ""} &mdash; page {carsResult.page} of{" "}
+            {carsResult.totalPages}
           </p>
           <div className="flex items-center justify-center">
             <Button
@@ -173,7 +165,10 @@ export function CarsTable() {
             <div className="flex gap-1">
               {getPageNumbers(page, carsResult.totalPages).map((p, i) =>
                 p === "..." ? (
-                  <span key={`ellipsis-${i}`} className="h-8 w-6 flex items-center justify-center text-xs text-muted-foreground select-none">
+                  <span
+                    key={`ellipsis-${i}`}
+                    className="h-8 w-6 flex items-center justify-center text-xs text-muted-foreground select-none"
+                  >
                     &hellip;
                   </span>
                 ) : (
@@ -181,10 +176,9 @@ export function CarsTable() {
                     key={p}
                     onClick={() => setPage(p)}
                     disabled={carsLoading}
-                    className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${p === page
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted text-muted-foreground"
-                      }`}
+                    className={`h-8 w-8 rounded-md text-xs font-medium transition-colors ${
+                      p === page ? "bg-primary text-primary-foreground" : "hover:bg-muted text-muted-foreground"
+                    }`}
                   >
                     {p}
                   </button>
@@ -205,5 +199,5 @@ export function CarsTable() {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -1,16 +1,10 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import {
-  Copy, Check, LogOut, Plus, X,
-  TrendingUp, TrendingDown, Timer,
-} from "lucide-react"
-import {
-  LineChart, Line, XAxis, Tooltip,
-  ResponsiveContainer,
-} from "recharts"
+import { Copy, Check, LogOut, Plus, X, TrendingUp, TrendingDown, Timer } from "lucide-react"
+import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from "recharts"
 
-const API_URL = "https://kmvjfcgxp4.execute-api.ap-southeast-2.amazonaws.com"
+const API_URL = process.env.NEXT_PUBLIC_DEMO_API_URL ?? ""
 
 interface AuthState {
   token: string
@@ -18,7 +12,10 @@ interface AuthState {
   role: "Admin" | "Viewer"
 }
 
-interface MetricPoint { date: string; value: number }
+interface MetricPoint {
+  date: string
+  value: number
+}
 interface Metric {
   id: string
   label: string
@@ -87,7 +84,7 @@ function buildMetrics(items: DynamoItem[]): Metric[] {
     const last7 = sorted.slice(-7)
     const latest = last7[last7.length - 1]
     const prev = last7.length > 1 ? last7[last7.length - 2].value : latest.value
-    const trend = prev !== 0 ? +((latest.value - prev) / prev * 100).toFixed(1) : 0
+    const trend = prev !== 0 ? +(((latest.value - prev) / prev) * 100).toFixed(1) : 0
     const history = last7.map((item) => ({
       date: new Date(item.date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       value: item.value,
@@ -100,7 +97,9 @@ function decodeJwtPayload(token: string): Record<string, unknown> {
   try {
     const b64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")
     return JSON.parse(atob(b64))
-  } catch { return {} }
+  } catch {
+    return {}
+  }
 }
 
 async function cognitoLogin(rawUsername: string, rawPassword: string): Promise<AuthState> {
@@ -112,7 +111,7 @@ async function cognitoLogin(rawUsername: string, rawPassword: string): Promise<A
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password: rawPassword }),
   })
-  const data = await res.json() as { idToken?: string; error?: string }
+  const data = (await res.json()) as { idToken?: string; error?: string }
   if (!res.ok) throw new Error(data.error ?? "Login failed.")
 
   const token = data.idToken!
@@ -126,12 +125,11 @@ async function cognitoLogout(token: string, username: string): Promise<void> {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ username }),
-  }).catch(() => { /* fail silently — local state still clears */ })
+  }).catch(() => null)
 }
 
 const SESSION_SECONDS = 2 * 60
 
-// ── CopyField ─────────────────────────────────────────────────────────────
 function CopyField({ label, value }: { label: string; value: string }) {
   const [copied, setCopied] = useState(false)
   const copy = () => {
@@ -147,15 +145,16 @@ function CopyField({ label, value }: { label: string; value: string }) {
         className="group flex items-center justify-between gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 font-mono text-sm transition-colors hover:bg-muted"
       >
         <span className="text-foreground">{value}</span>
-        {copied
-          ? <Check className="size-3.5 shrink-0 text-green-500" />
-          : <Copy className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />}
+        {copied ? (
+          <Check className="size-3.5 shrink-0 text-green-500" />
+        ) : (
+          <Copy className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+        )}
       </button>
     </div>
   )
 }
 
-// ── CredentialsCard ───────────────────────────────────────────────────────
 const DEMO_ACCOUNTS = [
   { role: "Admin", username: "admin", password: "Admin123!", badge: "bg-red-900/40 text-red-300 ring-1 ring-red-800" },
   { role: "Viewer", username: "viewer", password: "Viewer123!", badge: "bg-muted text-muted-foreground ring-1 ring-border" },
@@ -164,12 +163,13 @@ const DEMO_ACCOUNTS = [
 function CredentialsCard() {
   return (
     <div className="w-full max-w-4xl">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Demo Credentials — click to copy
-      </p>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Demo Credentials — click to copy</p>
       <div className="grid grid-cols-2 gap-3">
         {DEMO_ACCOUNTS.map(({ role, username, password, badge }) => (
-          <div key={role} className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 p-5 transition-colors hover:bg-muted/40">
+          <div
+            key={role}
+            className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 p-5 transition-colors hover:bg-muted/40"
+          >
             <span className={`self-start rounded-full px-2.5 py-0.5 text-xs font-semibold ${badge}`}>{role}</span>
             <CopyField label="Username" value={username} />
             <CopyField label="Password" value={password} />
@@ -180,7 +180,6 @@ function CredentialsCard() {
   )
 }
 
-// ── LoginScreen ───────────────────────────────────────────────────────────
 function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -214,7 +213,7 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
             <input
               type={field === "Password" ? "password" : "text"}
               value={field === "Password" ? password : username}
-              onChange={(e) => field === "Password" ? setPassword(e.target.value) : setUsername(e.target.value)}
+              onChange={(e) => (field === "Password" ? setPassword(e.target.value) : setUsername(e.target.value))}
               required
               autoComplete={field === "Password" ? "current-password" : "username"}
               placeholder={field === "Password" ? "••••••••" : "admin or viewer"}
@@ -225,9 +224,7 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
           </div>
         ))}
 
-        {error && (
-          <p className="rounded-md border border-red-800 bg-red-900/30 px-3 py-2 text-xs text-red-300">{error}</p>
-        )}
+        {error && <p className="rounded-md border border-red-800 bg-red-900/30 px-3 py-2 text-xs text-red-300">{error}</p>}
 
         <button
           type="submit"
@@ -241,19 +238,21 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
   )
 }
 
-// ── MetricCard ────────────────────────────────────────────────────────────
 function MetricCard({ m, flash }: { m: Metric; flash?: number }) {
   const trendUp = m.trend >= 0
-  const formatted =
-    m.prefix ? `${m.prefix}${m.value.toLocaleString()}`
-      : m.suffix ? `${m.value}${m.suffix}`
-        : m.value.toLocaleString()
+  const formatted = m.prefix
+    ? `${m.prefix}${m.value.toLocaleString()}`
+    : m.suffix
+      ? `${m.value}${m.suffix}`
+      : m.value.toLocaleString()
 
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/20 p-5 transition-colors hover:bg-muted/40">
       <div className="flex items-start justify-between gap-2">
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{m.label}</span>
-        <span className={`flex shrink-0 items-center gap-0.5 text-xs font-semibold ${trendUp ? "text-emerald-400" : "text-red-400"}`}>
+        <span
+          className={`flex shrink-0 items-center gap-0.5 text-xs font-semibold ${trendUp ? "text-emerald-400" : "text-red-400"}`}
+        >
           {trendUp ? <TrendingUp className="size-3" /> : <TrendingDown className="size-3" />}
           {Math.abs(m.trend)}%
         </span>
@@ -262,8 +261,11 @@ function MetricCard({ m, flash }: { m: Metric; flash?: number }) {
       <div className="flex items-center gap-2">
         <p className="text-2xl font-bold tracking-tight text-foreground">{formatted}</p>
         {flash !== undefined && (
-          <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${flash >= 0 ? "bg-emerald-900/60 text-emerald-400" : "bg-red-900/60 text-red-400"}`}>
-            {flash >= 0 ? "+" : ""}{flash.toLocaleString()}
+          <span
+            className={`rounded-full px-2 py-0.5 text-xs font-bold ${flash >= 0 ? "bg-emerald-900/60 text-emerald-400" : "bg-red-900/60 text-red-400"}`}
+          >
+            {flash >= 0 ? "+" : ""}
+            {flash.toLocaleString()}
           </span>
         )}
       </div>
@@ -272,12 +274,21 @@ function MetricCard({ m, flash }: { m: Metric; flash?: number }) {
         <LineChart data={m.history} margin={{ top: 2, right: 2, left: -40, bottom: 0 }}>
           <XAxis dataKey="date" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ background: "hsl(var(--muted))", border: "1px solid hsl(var(--border))", borderRadius: 6, fontSize: 11, color: "hsl(var(--foreground))" }}
+            contentStyle={{
+              background: "hsl(var(--muted))",
+              border: "1px solid hsl(var(--border))",
+              borderRadius: 6,
+              fontSize: 11,
+              color: "hsl(var(--foreground))",
+            }}
             labelStyle={{ color: "hsl(var(--muted-foreground))" }}
             cursor={{ stroke: "hsl(var(--border))" }}
           />
           <Line
-            type="monotone" dataKey="value" stroke={m.color} strokeWidth={2}
+            type="monotone"
+            dataKey="value"
+            stroke={m.color}
+            strokeWidth={2}
             dot={false}
             activeDot={{ r: 4, fill: m.color, strokeWidth: 0 }}
           />
@@ -287,7 +298,6 @@ function MetricCard({ m, flash }: { m: Metric; flash?: number }) {
   )
 }
 
-// ── AddMetricPanel ────────────────────────────────────────────────────────
 const METRIC_OPTIONS = [
   { value: "dau", label: "Daily Active Users" },
   { value: "revenue", label: "Revenue" },
@@ -315,9 +325,7 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
   const newTotal = parseFloat(((current?.value ?? 0) + (Number.isFinite(deltaNum) ? deltaNum : 0)).toFixed(10))
 
   const fmt = (v: number) =>
-    meta.prefix ? `${meta.prefix}${v.toLocaleString()}`
-      : meta.suffix ? `${v}${meta.suffix}`
-        : v.toLocaleString()
+    meta.prefix ? `${meta.prefix}${v.toLocaleString()}` : meta.suffix ? `${v}${meta.suffix}` : v.toLocaleString()
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -335,7 +343,7 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
         body: JSON.stringify({ metricName: id, delta: d, total: tot, value: tot, date: new Date().toISOString().slice(0, 10) }),
       })
       if (!res.ok) {
-        const body = await res.json().catch(() => ({})) as { error?: string }
+        const body = (await res.json().catch(() => ({}))) as { error?: string }
         throw new Error(body.error ?? `HTTP ${res.status}`)
       }
 
@@ -369,11 +377,16 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
               <label className="text-xs text-muted-foreground">Metric</label>
               <select
                 value={metricName}
-                onChange={(e) => { setMetric(e.target.value); setStatus("idle") }}
+                onChange={(e) => {
+                  setMetric(e.target.value)
+                  setStatus("idle")
+                }}
                 className="w-full rounded border border-border bg-muted px-2 py-1.5 text-sm text-foreground outline-none focus:border-primary"
               >
                 {METRIC_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -383,7 +396,10 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
                 <span className="ml-1 text-muted-foreground/60">(+add / −subtract)</span>
               </label>
               <input
-                type="number" value={delta} required placeholder="+200 or -50"
+                type="number"
+                value={delta}
+                required
+                placeholder="+200 or -50"
                 step="any"
                 onChange={(e) => setDelta(e.target.value)}
                 className="w-full rounded border border-border bg-muted px-2 py-1.5 text-sm text-foreground outline-none focus:border-primary"
@@ -396,11 +412,10 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
               <span className="text-muted-foreground">Current:</span>
               <span className="text-foreground">{fmt(current?.value ?? 0)}</span>
               <span className="text-muted-foreground">→</span>
-              <span className={`font-semibold ${deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                {fmt(newTotal)}
-              </span>
+              <span className={`font-semibold ${deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>{fmt(newTotal)}</span>
               <span className={`ml-auto ${deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-                {deltaNum >= 0 ? "+" : ""}{fmt(deltaNum)}
+                {deltaNum >= 0 ? "+" : ""}
+                {fmt(deltaNum)}
               </span>
             </div>
           )}
@@ -409,7 +424,8 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
           {status === "err" && <p className="text-xs text-red-400">{errMsg}</p>}
 
           <button
-            type="submit" disabled={loading}
+            type="submit"
+            disabled={loading}
             className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Saving…" : "Save"}
@@ -420,7 +436,6 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
   )
 }
 
-// ── DashboardView ─────────────────────────────────────────────────────────
 function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => void }) {
   const [metrics, setMetrics] = useState<Metric[]>([])
   const [loading, setLoading] = useState(true)
@@ -430,7 +445,7 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
 
   useEffect(() => {
     fetch(`${API_URL}/metrics`, { headers: { Authorization: `Bearer ${auth.token}` } })
-      .then((r) => r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((data: { metrics?: DynamoItem[] }) => {
         setMetrics(buildMetrics(data.metrics ?? []))
       })
@@ -464,7 +479,7 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
         return prev.map((m) => {
           if (m.id !== id) return m
           const prevVal = m.history[m.history.length - 1].value
-          const newTrend = prevVal !== 0 ? +((newTotal - prevVal) / prevVal * 100).toFixed(1) : 0
+          const newTrend = prevVal !== 0 ? +(((newTotal - prevVal) / prevVal) * 100).toFixed(1) : 0
           return { ...m, value: newTotal, trend: newTrend, history: [...m.history.slice(1), { date: "Now", value: newTotal }] }
         })
       }
@@ -472,13 +487,23 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
       return [...prev, { id, ...meta, value: newTotal, trend: 0, history: [{ date: "Now", value: newTotal }] }]
     })
     setDeltaFlash((f) => ({ ...f, [id]: delta }))
-    setTimeout(() => setDeltaFlash((f) => { const n = { ...f }; delete n[id]; return n }), 2500)
+    setTimeout(
+      () =>
+        setDeltaFlash((f) => {
+          const n = { ...f }
+          delete n[id]
+          return n
+        }),
+      2500
+    )
   }
 
   return (
     <div className="flex flex-1 flex-col overflow-auto">
       <div className="flex items-center justify-between border-b border-border px-5 py-3">
-        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${auth.role === "Admin" ? "bg-red-900/40 text-red-300 ring-red-800" : "bg-muted text-muted-foreground ring-border"}`}>
+        <span
+          className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${auth.role === "Admin" ? "bg-red-900/40 text-red-300 ring-red-800" : "bg-muted text-muted-foreground ring-border"}`}
+        >
           {auth.role}
         </span>
 
@@ -491,7 +516,8 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
             onClick={handleLogout}
             className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs text-muted-foreground transition hover:bg-muted hover:text-foreground"
           >
-            <LogOut className="size-3.5" />Logout
+            <LogOut className="size-3.5" />
+            Logout
           </button>
         </div>
       </div>
@@ -505,7 +531,11 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
           <p className="text-center text-sm text-muted-foreground">No metrics yet — add one below.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            {metrics.filter((m) => auth.role === "Admin" || m.id !== "revenue").map((m) => <MetricCard key={m.id} m={m} flash={deltaFlash[m.id]} />)}
+            {metrics
+              .filter((m) => auth.role === "Admin" || m.id !== "revenue")
+              .map((m) => (
+                <MetricCard key={m.id} m={m} flash={deltaFlash[m.id]} />
+              ))}
           </div>
         )}
         {auth.role === "Admin" && !loading && <AddMetricPanel token={auth.token} metrics={metrics} onAdd={handleAdd} />}
@@ -514,7 +544,6 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
   )
 }
 
-// ── DashboardPanel ────────────────────────────────────────────────────────
 function DashboardPanel() {
   const [auth, setAuth] = useState<AuthState | null>(null)
 
@@ -528,9 +557,7 @@ function DashboardPanel() {
       </div>
 
       <div className="flex min-h-[680px] flex-col">
-        {auth
-          ? <DashboardView auth={auth} onLogout={() => setAuth(null)} />
-          : <LoginScreen onLogin={setAuth} />}
+        {auth ? <DashboardView auth={auth} onLogout={() => setAuth(null)} /> : <LoginScreen onLogin={setAuth} />}
       </div>
     </div>
   )
@@ -541,9 +568,7 @@ export default function MicroservicePage() {
     <div className="flex w-full flex-col items-center gap-8 overflow-x-hidden px-4 py-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight">Microservice Architecture</h1>
-        <p className="mt-2 text-muted-foreground">
-          Terraform IaC · AWS · Cognito auth · Lambda · API Gateway · DynamoDB
-        </p>
+        <p className="mt-2 text-muted-foreground">Terraform IaC · AWS · Cognito auth · Lambda · API Gateway · DynamoDB</p>
       </div>
       <CredentialsCard />
       <DashboardPanel />
