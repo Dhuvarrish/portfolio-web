@@ -4,19 +4,26 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, User, Briefcase, Mail, Info, FileText } from "lucide-react";
+import { BsSun, BsMoon } from "react-icons/bs";
+import { Menu, User, Briefcase, Mail, ChevronRight, Info, FileText } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
-  { label: "Projects", href: "/projects", icon: Briefcase },
-  { label: "Info", href: "/info", icon: Info },
 ]
+
+const projectsChildren = [
+  { label: "Backend", href: "/projects/backend-api-showcase" },
+  { label: "Microservice Demo", href: "/projects/microservice" },
+]
+
+const infoItem = { label: "Info", href: "/info", icon: Info }
 
 const contactItem = { label: "Contact", href: "/contact", icon: Mail }
 
@@ -118,6 +125,49 @@ export function Header() {
                 <span>{item.label}</span>
               </Link>
             ))}
+
+            <Collapsible defaultOpen={pathname.startsWith("/projects")} className="group/collapsible">
+              <CollapsibleTrigger className={`flex w-full items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
+                ${pathname.startsWith("/projects")
+                  ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <Briefcase className="size-6 shrink-0" />
+                <span>Projects</span>
+                <ChevronRight className="ml-auto size-5 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="ml-10 mt-1 flex flex-col gap-1 border-l border-border pl-4">
+                  {projectsChildren.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={`flex items-center rounded-xl px-5 py-4 text-lg font-medium transition-colors
+                        ${pathname === child.href
+                          ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+            <Separator className="my-1" />
+            <Link
+              href={infoItem.href}
+              onClick={() => setMenuOpen(false)}
+              className={`flex items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors ${isActive(infoItem.href)
+                ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+            >
+              <infoItem.icon className="size-6 shrink-0" />
+              <span>{infoItem.label}</span>
+            </Link>
           </nav>
           <Separator />
           <div className="p-3">

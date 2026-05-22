@@ -3,11 +3,13 @@ import { Globe, Layers, Paintbrush, PackageOpen } from "lucide-react";
 const builtWith = [
   { name: "Next.js 16", description: "App router, server components, file-based routing" },
   { name: "TypeScript", description: "Type safety across the entire codebase" },
-  { name: "Tailwind CSS", description: "Utility-first styling with a custom dark theme" },
-  { name: "shadcn/ui", description: "Accessible component primitives built on Radix UI" },
-  { name: "AWS", description: "Cloud provider — compute, storage, and serverless infrastructure" },
-  { name: "Terraform", description: "Infrastructure as Code — declarative cloud resource provisioning" },
-  { name: "react-icons", description: "Icon library for tech stack and UI icons" },
+  { name: "Tailwind CSS", description: "Easy global styling with a custom dark theme" },
+  { name: "shadcn/ui", description: "Accessible components used throughout the application" },
+  { name: "C# .NET", description: "Backend API development for Backend project demo" },
+  { name: "AWS", description: "Cloud provider for compute, storage, and serverless infrastructure" },
+  { name: "Terraform", description: "Infrastructure as Code to manage cloud resources" },
+  { name: "Cloudflare", description: "Domain registrar, DNS, and CDN services " },
+  { name: "React Icons", description: "Icon library for tech stack and UI icons" },
 ];
 
 const projects: {
@@ -21,7 +23,6 @@ const projects: {
       description: "A cloud-hosted analytics dashboard with authentication, role-based access, and real-time metrics — built on AWS with Terraform-managed infrastructure.",
       tags: ["AWS", "Terraform", "Cognito", "Lambda", "DynamoDB"],
     },
-    // Add new projects here
   ];
 
 export default function InfoPage() {
@@ -35,7 +36,7 @@ export default function InfoPage() {
           This is my personal portfolio. A space where I share my projects and experiences. I created it to be simple, fast, and built to evolve over time rather than act as a static website.
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-          The site is designed to grow alongside my personal projects. As I take on new projects, I will continue to expand this website with new projects and try to document them in the "Info" page.
+          The site is designed to grow alongside my personal projects. As I take on new projects, I will continue to expand this website with new projects and try to document them in the &quot;Info&quot; page.
         </p>
       </section>
 
@@ -78,9 +79,6 @@ export default function InfoPage() {
           </p>
         </div>
       </section>
-
-
-
     </div>
   );
 }

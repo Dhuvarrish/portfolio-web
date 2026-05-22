@@ -27,7 +27,7 @@ export default function ProjectsPage() {
 
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
         <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-          A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js frontend to a C# .NET API, with data served from in-memory mock data — no database involved.
+          A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js frontend to a C# .NET API, with data served from backend mock data — no database involved.
         </p>
         <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
           The architecture diagram below shows the full request flow, including database path. Database is not used here, but the current setup is designed to support it.
@@ -86,7 +86,7 @@ export default function ProjectsPage() {
         />
         <p className="text-center text-xs text-muted-foreground">Click image to zoom</p>
         <p className="text-center text-xs text-muted-foreground pt-1">
-          Architecture diagram made with{" "}
+          I created this architecture diagram with{" "}
           <a
             href="https://app.diagrams.net"
             target="_blank"
@@ -95,7 +95,6 @@ export default function ProjectsPage() {
           >
             Draw.io
           </a>{" "}
-          — a free, open-source diagramming tool.
         </p>
       </div>
     </div>
@@ -106,8 +105,8 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="group relative rounded-lg border border-border bg-muted/30 p-5 hover:bg-muted/50 transition-colors flex flex-col gap-3 neon-card">
       <Link
-        href={`/projects/${project.id}`}
-        className="absolute inset-0 rounded-lg"
+        href={`/projects/backend-api-showcase/${project.id}`}
+        className="absolute inset-0 rounded-2xl"
         aria-label={`View ${project.title}`}
       />
       <div>

@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { ChevronRight } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -12,18 +13,30 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { User, Briefcase, Mail, PanelLeftClose, PanelLeftOpen, Info } from "lucide-react"
 import { FaGithub } from "react-icons/fa"
+
+const projectsChildren = [
+  { label: "Backend ", href: "/projects/backend-api-showcase" },
+  { label: "Microservice", href: "/projects/microservice" },
+]
 
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
-  { label: "Projects", href: "/projects", icon: Briefcase },
-  { label: "Info", href: "/info", icon: Info },
+  { label: "Info", href: "/info", icon: Info }
 ]
 
 const contactItem = { label: "Contact", href: "/contact", icon: Mail }
@@ -48,6 +61,7 @@ function CollapseButton() {
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const isProjectsActive = pathname.startsWith("/projects")
 
   return (
     <Sidebar collapsible="icon">
@@ -72,6 +86,29 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 )
               })}
+
+              <Collapsible defaultOpen={isProjectsActive} className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton tooltip="Projects" isActive={isProjectsActive}>
+                      <Briefcase />
+                      <span>Projects</span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {projectsChildren.map((child) => (
+                        <SidebarMenuSubItem key={child.href}>
+                          <SidebarMenuSubButton asChild isActive={pathname === child.href} className="h-11 text-lg">
+                            <Link href={child.href}>{child.label}</Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

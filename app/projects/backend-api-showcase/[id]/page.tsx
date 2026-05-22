@@ -44,7 +44,7 @@ export default function ProjectDetailPage() {
     return (
       <div className="w-full py-8 md:py-10 space-y-4">
         <Link
-          href="/projects"
+          href="/projects/backend-api-showcase"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="size-4" />
@@ -58,7 +58,7 @@ export default function ProjectDetailPage() {
   return (
     <div className="w-full py-8 md:py-10 space-y-8">
       <Link
-        href="/projects"
+        href="/projects/backend-api-showcase"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <ArrowLeft className="size-4" />

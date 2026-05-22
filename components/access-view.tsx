@@ -15,18 +15,18 @@ import { getAccessView, type UserEntry, type Resource } from "@/app/actions";
 import { cn } from "@/lib/utils";
 
 const roleBadgeColors: Record<string, string> = {
-  Admin:     "bg-red-500/10 text-red-600 ring-red-500/20 dark:text-red-400",
-  Manager:   "bg-blue-500/10 text-blue-600 ring-blue-500/20 dark:text-blue-400",
+  Admin: "bg-red-500/10 text-red-600 ring-red-500/20 dark:text-red-400",
+  Manager: "bg-blue-500/10 text-blue-600 ring-blue-500/20 dark:text-blue-400",
   Developer: "bg-green-500/10 text-green-600 ring-green-500/20 dark:text-green-400",
-  Viewer:    "bg-gray-500/10 text-gray-600 ring-gray-500/20 dark:text-gray-400",
-  Auditor:   "bg-yellow-500/10 text-yellow-600 ring-yellow-500/20 dark:text-yellow-400",
+  Viewer: "bg-gray-500/10 text-gray-600 ring-gray-500/20 dark:text-gray-400",
+  Auditor: "bg-yellow-500/10 text-yellow-600 ring-yellow-500/20 dark:text-yellow-400",
 };
 
 const categoryMeta: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
-  GitHub:         { icon: GitBranch, color: "text-purple-500", bg: "bg-purple-500/10" },
-  Database:       { icon: Database,  color: "text-blue-500",   bg: "bg-blue-500/10"   },
-  Deployments:    { icon: Rocket,    color: "text-orange-500", bg: "bg-orange-500/10" },
-  Administration: { icon: Shield,    color: "text-red-500",    bg: "bg-red-500/10"    },
+  GitHub: { icon: GitBranch, color: "text-purple-500", bg: "bg-purple-500/10" },
+  Database: { icon: Database, color: "text-blue-500", bg: "bg-blue-500/10" },
+  Deployments: { icon: Rocket, color: "text-orange-500", bg: "bg-orange-500/10" },
+  Administration: { icon: Shield, color: "text-red-500", bg: "bg-red-500/10" },
 };
 
 function getInitials(name: string) {
@@ -83,7 +83,6 @@ function UserDropdown({ users, selectedId, onSelect }: {
 
       {open && (
         <div className="absolute z-50 mt-1 w-full rounded-lg border border-border bg-background shadow-lg overflow-hidden">
-          {/* Search input */}
           <div className="flex items-center gap-2 border-b border-border px-3 py-2">
             <Search className="size-3.5 shrink-0 text-muted-foreground" />
             <input
