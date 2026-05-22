@@ -568,7 +568,22 @@ export default function MicroservicePage() {
     <div className="flex w-full flex-col items-center gap-8 overflow-x-hidden px-4 py-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight">Microservice Architecture</h1>
-        <p className="mt-2 text-muted-foreground">Terraform IaC · AWS · Cognito auth · Lambda · API Gateway · DynamoDB</p>
+        <div className="mt-3 flex flex-col items-center gap-2">
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {["Next.js", "TypeScript", "Tailwind CSS", "Recharts"].map((tag) => (
+              <span key={tag} className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="flex flex-wrap justify-center gap-1.5">
+            {["Terraform IaC", "AWS", "Cognito Auth", "Lambda", "API Gateway", "DynamoDB"].map((tag) => (
+              <span key={tag} className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
       <CredentialsCard />
       <DashboardPanel />

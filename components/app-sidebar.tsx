@@ -58,7 +58,8 @@ function CollapseButton() {
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const isProjectsActive = pathname.startsWith("/projects")
+  const isChildActive = projectsChildren.some((child) => pathname.startsWith(child.href))
+  const isProjectsActive = pathname.startsWith("/projects") && !isChildActive
 
   return (
     <Sidebar collapsible="icon">
@@ -84,7 +85,7 @@ export function AppSidebar() {
                 )
               })}
 
-              <Collapsible defaultOpen={isProjectsActive} className="group/collapsible">
+              <Collapsible defaultOpen={true} className="group/collapsible">
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton tooltip="Projects" isActive={isProjectsActive}>
@@ -94,10 +95,14 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <SidebarMenuSub>
+                    <SidebarMenuSub className="mt-1">
                       {projectsChildren.map((child) => (
                         <SidebarMenuSubItem key={child.href}>
-                          <SidebarMenuSubButton asChild isActive={pathname === child.href} className="h-11 text-lg">
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={pathname.startsWith(child.href)}
+                            className="h-11 text-lg data-[active=true]:bg-sidebar-active data-[active=true]:text-sidebar-active-foreground"
+                          >
                             <Link href={child.href}>{child.label}</Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>

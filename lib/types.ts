@@ -1,3 +1,10 @@
+export interface Star {
+  situation: string
+  task: string
+  action: string
+  result: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -5,6 +12,7 @@ export interface Project {
   tags: string[]
   repoUrl?: string
   liveUrl?: string
+  star?: Star
 }
 
 export interface Car {

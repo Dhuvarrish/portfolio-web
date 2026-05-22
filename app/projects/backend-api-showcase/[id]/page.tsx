@@ -9,6 +9,7 @@ import type { Project } from "@/lib/types"
 import { CarsTable } from "@/components/cars-table"
 import { UserRbacTable } from "@/components/user-rbac-table"
 import { AccessView } from "@/components/access-view"
+import { Separator } from "@/components/ui/separator"
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -107,6 +108,27 @@ export default function ProjectDetailPage() {
           </div>
         )}
       </div>
+
+      {project.star && (
+        <>
+          <div className="max-w-2xl space-y-4">
+            {(
+              [
+                { label: "Situation", value: project.star.situation },
+                { label: "Task", value: project.star.task },
+                { label: "Action", value: project.star.action },
+                { label: "Result", value: project.star.result },
+              ] as const
+            ).map(({ label, value }) => (
+              <div key={label} className="space-y-1">
+                <span className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">{label}</span>
+                <p className="text-sm leading-relaxed">{value}</p>
+              </div>
+            ))}
+          </div>
+          <Separator />
+        </>
+      )}
 
       {project.id === "db40fc5d-db43-4878-9f33-2e3f2ad2c03d" && <CarsTable />}
       {project.id === "8f66c20f-cfd9-42ea-b3a5-eb0d640e5f4b" && <UserRbacTable />}

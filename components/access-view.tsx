@@ -205,14 +205,18 @@ export function AccessView() {
         <UserDropdown users={users} selectedId={selectedId} onSelect={setSelectedId} />
       </div>
 
-      {selectedUser && (
-        <>
-          {/* User profile card */}
-          <div className="flex items-start gap-4 rounded-xl border border-border bg-muted/20 p-5">
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-semibold">
-              {getInitials(selectedUser.userName)}
-            </div>
-            <div className="space-y-1 min-w-0">
+      <div className="flex items-start gap-4 rounded-xl border border-border bg-muted/20 p-5">
+        <div
+          className={cn(
+            "flex size-12 shrink-0 items-center justify-center rounded-full text-sm font-semibold",
+            selectedUser ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+          )}
+        >
+          {selectedUser ? getInitials(selectedUser.userName) : "?"}
+        </div>
+        <div className="space-y-1 min-w-0">
+          {selectedUser ? (
+            <>
               <p className="font-semibold text-base leading-tight">{selectedUser.userName}</p>
               <p className="text-sm text-muted-foreground">{selectedUser.email}</p>
               <span
@@ -224,26 +228,31 @@ export function AccessView() {
                 {selectedUser.role}
               </span>
               <p className="text-xs text-muted-foreground leading-relaxed pt-1 max-w-lg">{selectedUser.roleDescription}</p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-muted-foreground">No user selected</p>
+              <p className="text-xs text-muted-foreground/60">Choose a user above to view their access</p>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Resource cards grouped by category — always visible, "No Access" until a user is selected */}
+      <div className="space-y-6">
+        {categories.map((category) => (
+          <div key={category} className="space-y-3">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{category}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {resources
+                .filter((r) => r.category === category)
+                .map((resource) => (
+                  <ResourceCard key={resource.id} resource={resource} role={selectedUser?.role ?? ""} />
+                ))}
             </div>
           </div>
-
-          {/* Resource cards grouped by category */}
-          <div className="space-y-6">
-            {categories.map((category) => (
-              <div key={category} className="space-y-3">
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{category}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {resources
-                    .filter((r) => r.category === category)
-                    .map((resource) => (
-                      <ResourceCard key={resource.id} resource={resource} role={selectedUser.role} />
-                    ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+        ))}
+      </div>
     </div>
   )
 }

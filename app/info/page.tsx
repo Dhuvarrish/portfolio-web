@@ -32,11 +32,11 @@ export default function InfoPage() {
       {/* About this Portfolio */}
       <section className="space-y-3">
         <h1 className="text-2xl font-bold tracking-tight">About this Portfolio</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
           This is my personal portfolio. A space where I share my projects and experiences. I created it to be simple, fast, and
           built to evolve over time rather than act as a static website.
         </p>
-        <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
           The site is designed to grow alongside my personal projects. As I take on new projects, I will continue to expand this
           website with new projects and try to document them in the &quot;Info&quot; page.
         </p>
@@ -48,11 +48,11 @@ export default function InfoPage() {
           <Layers className="size-4 text-muted-foreground" />
           <h2 className="text-base font-semibold tracking-tight">Built with</h2>
         </div>
-        <div className="divide-y divide-border border border-border rounded-lg overflow-hidden">
+        <div className="divide-y divide-border border border-border rounded-lg overflow-hidden w-full max-w-3xl">
           {builtWith.map((item) => (
-            <div key={item.name} className="flex items-start gap-4 px-4 py-3 bg-background hover:bg-muted/20 transition-colors">
+            <div key={item.name} className="flex items-start gap-8 px-4 py-3 bg-background hover:bg-muted/20 transition-colors">
               <span className="text-sm font-medium w-32 shrink-0">{item.name}</span>
-              <span className="text-sm text-muted-foreground">{item.description}</span>
+              <span className="text-sm align-right  text-muted-foreground">{item.description}</span>
             </div>
           ))}
         </div>
@@ -64,7 +64,7 @@ export default function InfoPage() {
           <Paintbrush className="size-4 text-muted-foreground" />
           <h2 className="text-base font-semibold tracking-tight">Design</h2>
         </div>
-        <div className="space-y-2 text-sm text-muted-foreground leading-relaxed max-w-2xl">
+        <div className="space-y-2 text-sm text-muted-foreground leading-relaxed max-w-3xl">
           <p>
             Dark theme with a professional blue palette, deep backgrounds to keep it clean. Colours are defined as global CSS
             variables so every component pulls from the same set of tokens rather than scattering hardcoded values through the

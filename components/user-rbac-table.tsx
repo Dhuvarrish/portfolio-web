@@ -137,7 +137,7 @@ export function UserRbacTable() {
         />
       </div>
 
-      <div className="rounded-xl border border-border bg-muted/20 overflow-x-auto">
+      <div className="rounded-xl border border-border bg-muted/20 overflow-x-auto min-h-[650px]">
         <Table className="whitespace-nowrap">
           <TableHeader>
             <TableRow className="hover:bg-transparent">

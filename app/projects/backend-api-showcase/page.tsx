@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import Lightbox from "yet-another-react-lightbox"
 import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom"
+import { ChevronRight } from "lucide-react"
 import { getProjects } from "@/app/actions"
 import type { Project } from "@/lib/types"
 
@@ -23,7 +24,7 @@ export default function ProjectsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Backend API Showcase</h1>
         <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
           A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js
           frontend to a C# .NET API, with data served from backend mock data — no database involved.
@@ -78,7 +79,7 @@ export default function ProjectsPage() {
           carousel={{ finite: true }}
           render={{ buttonPrev: () => null, buttonNext: () => null }}
         />
-        <p className="text-center text-xs text-muted-foreground">Click image to zoom</p>
+        <p className="text-center text-xs text-muted-foreground">Click on the image to zoom</p>
         <p className="text-center text-xs text-muted-foreground pt-1">
           I created this architecture diagram with{" "}
           <a
@@ -97,18 +98,18 @@ export default function ProjectsPage() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="group relative rounded-lg border border-border bg-muted/30 p-5 hover:bg-muted/50 transition-colors flex flex-col gap-3 neon-card">
+    <div className="group relative rounded-lg border border-border bg-muted/30 p-5 hover:bg-muted/50 hover:border-muted-foreground/30 transition-all cursor-pointer flex flex-col gap-3">
       <Link
         href={`/projects/backend-api-showcase/${project.id}`}
-        className="absolute inset-0 rounded-2xl"
+        className="absolute inset-0 rounded-lg"
         aria-label={`View ${project.title}`}
       />
-      <div>
-        <p className="font-semibold text-sm mb-1.5 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-          {project.title}
-        </p>
-        <p className="text-xs text-muted-foreground leading-relaxed">{project.description}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="font-semibold text-sm group-hover:text-foreground transition-colors">{project.title}</p>
+        <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground" />
       </div>
+
+      <p className="text-xs text-muted-foreground leading-relaxed">{project.description}</p>
 
       <div className="flex flex-wrap gap-1.5 mt-auto pt-1">
         {project.tags.map((tag) => (
