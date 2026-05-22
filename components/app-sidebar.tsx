@@ -16,13 +16,14 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { User, Briefcase, Mail, PanelLeftClose, PanelLeftOpen } from "lucide-react"
+import { User, Briefcase, Mail, PanelLeftClose, PanelLeftOpen, Info } from "lucide-react"
 import { FaGithub } from "react-icons/fa"
 
 const navItems = [
   { label: "About", href: "/", icon: User },
   { label: "Github", href: "/github", icon: FaGithub },
   { label: "Projects", href: "/projects", icon: Briefcase },
+  { label: "Info", href: "/info", icon: Info },
 ]
 
 const contactItem = { label: "Contact", href: "/contact", icon: Mail }
@@ -34,7 +35,7 @@ function CollapseButton() {
     <button
       onClick={toggleSidebar}
       title={isExpanded ? "Collapse" : "Expand"}
-      className="flex h-11 w-full items-center gap-2 rounded-md px-2 text-lg font-medium text-muted-foreground transition-colors hover:bg-green-100 hover:text-green-800 dark:hover:bg-green-950 dark:hover:text-green-300 group-data-[collapsible=icon]:pl-2"
+      className="flex h-11 w-full items-center gap-2 rounded-md px-2 text-lg font-medium text-green-500 transition-colors hover:bg-green-950 hover:text-green-300 group-data-[collapsible=icon]:pl-2"
     >
       {isExpanded
         ? <PanelLeftClose className="size-5 shrink-0 text-green-500" />

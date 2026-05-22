@@ -104,10 +104,10 @@ export default function ProjectsPage() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="group relative rounded-2xl border border-border bg-muted/30 p-5 hover:bg-muted/50 transition-colors flex flex-col gap-3">
+    <div className="group relative rounded-lg border border-border bg-muted/30 p-5 hover:bg-muted/50 transition-colors flex flex-col gap-3 neon-card">
       <Link
         href={`/projects/${project.id}`}
-        className="absolute inset-0 rounded-2xl"
+        className="absolute inset-0 rounded-lg"
         aria-label={`View ${project.title}`}
       />
       <div>
@@ -121,7 +121,7 @@ function ProjectCard({ project }: { project: Project }) {
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border"
+            className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border"
           >
             {tag}
           </span>

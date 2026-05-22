@@ -72,11 +72,11 @@ export default function ProjectDetailPage() {
           <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border"
+              className="rounded bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border"
             >
               {tag}
             </span>
@@ -90,7 +90,7 @@ export default function ProjectDetailPage() {
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium hover:bg-muted/60 transition-colors"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium hover:bg-muted/60 transition-colors"
               >
                 <GitBranch className="size-4" />
                 View Repository
@@ -101,7 +101,7 @@ export default function ProjectDetailPage() {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium hover:bg-muted/60 transition-colors"
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium hover:bg-muted/60 transition-colors"
               >
                 <ExternalLink className="size-4" />
                 Live Demo
