@@ -77,7 +77,7 @@ const approach = [
 export default function AboutPage() {
   return (
     <div className="w-full space-y-14">
-      {/* Hero */}
+      {/* About Me */}
       <section className="flex flex-col sm:flex-row sm:items-stretch gap-8">
         <div className="relative w-48 h-80 rounded-xl overflow-hidden ring-2 ring-border shrink-0">
           <Image src="/me.jpg" alt="Dhuvarrish" fill className="object-cover" priority />
@@ -126,7 +126,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Approach — simple divided list, no big numbers */}
+      {/* Approach */}
       <section>
         <h2 className="text-xl font-bold tracking-tight mb-1">How I work</h2>
         <div className="divide-y divide-border">
@@ -142,7 +142,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Beyond the Code — flat icon + text rows, no colored inner boxes */}
+      {/* Beyond the Code */}
       <section>
         <h2 className="text-xl font-bold tracking-tight mb-6">Beyond the Code</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -192,7 +192,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Get in touch — simple border-top section */}
+      {/* Get in touch */}
       <section className="border-t border-border pt-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:justify-between">
           <div>

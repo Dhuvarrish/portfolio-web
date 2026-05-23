@@ -48,8 +48,11 @@ export default async function GithubPage() {
       <h2 className="text-xl font-semibold mb-3 md:mb-4">Recent Repositories</h2>
       <div className="w-full min-w-[22rem] max-w-[25rem] md:min-w-[35rem] md:max-w-[35rem] grid gap-3">
         {repos.map((repo) => (
-          <div
+          <a
             key={repo.id}
+            href={repo.private ? undefined : repo.html_url}
+            target={repo.private ? undefined : "_blank"}
+            rel="noopener noreferrer"
             className="w-full block rounded-lg border border-border p-3 md:p-4 hover:bg-muted transition-colors overflow-hidden"
           >
             <div className="flex items-start justify-between gap-2 w-full">
@@ -72,7 +75,7 @@ export default async function GithubPage() {
                 <span>{repo.language}</span>
               </div>
             )}
-          </div>
+          </a>
         ))}
       </div>
     </>
