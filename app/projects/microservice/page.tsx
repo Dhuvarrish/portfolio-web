@@ -142,7 +142,7 @@ function CopyField({ label, value }: { label: string; value: string }) {
       <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</span>
       <button
         onClick={copy}
-        className="group flex items-center justify-between gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 font-mono text-sm transition-colors hover:bg-muted"
+        className="group flex items-center justify-between gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 font-mono text-md transition-colors hover:bg-muted"
       >
         <span className="text-foreground">{value}</span>
         {copied ? (
@@ -219,17 +219,17 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
               placeholder={field === "Password" ? "••••••••" : "admin or viewer"}
               maxLength={field === "Password" ? 128 : 30}
               pattern={field === "Password" ? undefined : "[a-zA-Z0-9]+"}
-              className="rounded-md border border-border bg-muted/50 px-3 py-2 text-sm text-foreground placeholder-muted-foreground outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
+              className="rounded-md border border-border bg-muted/50 px-3 py-2 text-md text-foreground placeholder-muted-foreground outline-none transition focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
         ))}
 
-        {error && <p className="rounded-md border border-red-800 bg-red-900/30 px-3 py-2 text-xs text-red-300">{error}</p>}
+        {error && <p className="rounded-md border border-red-800 bg-red-900/30 px-3 py-2 text-md   text-red-300">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="mt-1 rounded-md bg-primary py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-1 rounded-md bg-primary py-2 text-md  font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Signing in…" : "Sign in"}
         </button>
@@ -364,7 +364,7 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
     <div className="rounded-xl border border-border bg-muted/20">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 px-4 py-3 text-sm font-medium text-muted-foreground transition hover:text-foreground"
+        className="flex w-full items-center gap-2 px-4 py-3 text-md font-medium text-muted-foreground transition hover:text-foreground"
       >
         {open ? <X className="size-4" /> : <Plus className="size-4" />}
         {open ? "Cancel" : "Add Metric"}
@@ -381,7 +381,7 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
                   setMetric(e.target.value)
                   setStatus("idle")
                 }}
-                className="w-full rounded border border-border bg-muted px-2 py-1.5 text-sm text-foreground outline-none focus:border-primary"
+                className="w-full rounded border border-border bg-muted px-2 py-1.5 text-md text-foreground outline-none focus:border-primary"
               >
                 {METRIC_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -402,13 +402,13 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
                 placeholder="+200 or -50"
                 step="any"
                 onChange={(e) => setDelta(e.target.value)}
-                className="w-full rounded border border-border bg-muted px-2 py-1.5 text-sm text-foreground outline-none focus:border-primary"
+                className="w-full rounded border border-border bg-muted px-2 py-1.5 text-md text-foreground outline-none focus:border-primary"
               />
             </div>
           </div>
 
           {delta !== "" && Number.isFinite(deltaNum) && (
-            <div className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-xs">
+            <div className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-md">
               <span className="text-muted-foreground">Current:</span>
               <span className="text-foreground">{fmt(current?.value ?? 0)}</span>
               <span className="text-muted-foreground">→</span>
@@ -426,7 +426,7 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
+            className="rounded-md bg-primary px-3 py-1.5 text-md font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Saving…" : "Save"}
           </button>
@@ -524,11 +524,11 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
 
       <div className="flex flex-col gap-5 p-5 pb-10">
         {loading ? (
-          <p className="text-center text-sm text-muted-foreground">Loading metrics…</p>
+          <p className="text-center text-md text-muted-foreground">Loading metrics…</p>
         ) : fetchErr ? (
-          <p className="text-center text-sm text-red-400">{fetchErr}</p>
+          <p className="text-center text-md text-red-400">{fetchErr}</p>
         ) : metrics.length === 0 ? (
-          <p className="text-center text-sm text-muted-foreground">No metrics yet — add one below.</p>
+          <p className="text-center text-md text-muted-foreground">No metrics yet — add one below.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {metrics
@@ -550,7 +550,7 @@ function DashboardPanel() {
   return (
     <div className="w-full max-w-4xl overflow-x-hidden rounded-xl border border-border">
       <div className="flex items-center justify-between border-b border-border px-5 py-3">
-        <span className="text-sm font-medium text-foreground">SaaS Dashboard</span>
+        <span className="text-md font-medium text-foreground">SaaS Dashboard</span>
         <span className="rounded-full bg-emerald-900/40 px-2.5 py-0.5 text-xs font-medium text-emerald-400 ring-1 ring-emerald-800">
           Live Demo
         </span>
@@ -571,14 +571,14 @@ export default function MicroservicePage() {
         <div className="mt-3 flex flex-col items-center gap-2">
           <div className="flex flex-wrap justify-center gap-1.5">
             {["Next.js", "TypeScript", "Tailwind CSS", "Recharts"].map((tag) => (
-              <span key={tag} className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
+              <span key={tag} className="rounded bg-background px-2 py-0.5 text-md text-muted-foreground ring-1 ring-border">
                 {tag}
               </span>
             ))}
           </div>
           <div className="flex flex-wrap justify-center gap-1.5">
             {["Terraform IaC", "AWS", "Cognito Auth", "Lambda", "API Gateway", "DynamoDB"].map((tag) => (
-              <span key={tag} className="rounded bg-background px-2 py-0.5 text-xs text-muted-foreground ring-1 ring-border">
+              <span key={tag} className="rounded bg-background px-2 py-0.5 text-md text-muted-foreground ring-1 ring-border">
                 {tag}
               </span>
             ))}

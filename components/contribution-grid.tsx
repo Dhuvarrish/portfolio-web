@@ -10,10 +10,10 @@ type ContributionDay = {
 
 const levelClasses: Record<number, string> = {
   0: "bg-muted",
-  1: "bg-green-300",
-  2: "bg-green-400",
+  1: "bg-green-900",
+  2: "bg-green-700",
   3: "bg-green-600",
-  4: "bg-green-800",
+  4: "bg-green-500",
 }
 
 function countToLevel(count: number, max: number): 0 | 1 | 2 | 3 | 4 {

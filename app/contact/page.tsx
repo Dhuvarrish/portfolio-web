@@ -21,10 +21,10 @@ const links = [
 
 export default function ContactPage() {
   return (
-    <div className="w-full py-8 md:py-10 space-y-10 max-w-xl">
+    <div className="w-full py-8 md:py-10 space-y-10 max-w-xxl">
       <div className="space-y-2">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Get in touch</h1>
-        <p className="text-sm text-muted-foreground leading-relaxed">
+        <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Get in touch</h1>
+        <p className="text-md text-muted-foreground leading-relaxed">
           I’m open to new opportunities and happy to have a conversation if there’s a good fit.
         </p>
       </div>
@@ -41,7 +41,7 @@ export default function ContactPage() {
           >
             <Icon className="size-4 text-muted-foreground shrink-0" />
             <span>{title} : </span>
-            <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{display}</span>
+            <span className="text-md text-muted-foreground group-hover:text-foreground transition-colors">{display}</span>
           </a>
         ))}
       </div>
