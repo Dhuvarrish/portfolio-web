@@ -70,12 +70,12 @@ export default function ProjectDetailPage() {
       <div className="max-w-2xl space-y-6">
         <div className="space-y-3">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{project.title}</h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
+          <p className="text-md text-muted-foreground leading-relaxed">{project.description}</p>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
-            <span key={tag} className="rounded bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border">
+            <span key={tag} className="rounded bg-muted px-2.5 py-1 text-sm font-medium text-muted-foreground ring-1 ring-border">
               {tag}
             </span>
           ))}
@@ -94,24 +94,13 @@ export default function ProjectDetailPage() {
                 View Repository
               </a>
             )}
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2.5 text-sm font-medium hover:bg-muted/60 transition-colors"
-              >
-                <ExternalLink className="size-4" />
-                Live Demo
-              </a>
-            )}
           </div>
         )}
       </div>
 
       {project.star && (
         <>
-          <div className="max-w-2xl space-y-4">
+          <div className="max-w-3xl space-y-4">
             {(
               [
                 { label: "Situation", value: project.star.situation },
@@ -121,8 +110,8 @@ export default function ProjectDetailPage() {
               ] as const
             ).map(({ label, value }) => (
               <div key={label} className="space-y-1">
-                <span className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">{label}</span>
-                <p className="text-sm leading-relaxed">{value}</p>
+                <span className="text-md font-semibold uppercase tracking-widest text-muted-foreground">{label}</span>
+                <p className="text-md leading-relaxed">{value}</p>
               </div>
             ))}
           </div>

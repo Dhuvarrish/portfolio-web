@@ -36,7 +36,7 @@ interface DynamoItem {
 }
 
 const VALID_METRIC_IDS = new Set(["dau", "revenue", "signups", "churn"])
-const MAX_METRIC_VALUE = 1_000_000_000
+const MAX_METRIC_VALUE = 100_000
 const USERNAME_RE = /^[a-z0-9]{1,30}$/
 
 function validateUsername(raw: string): string {
@@ -69,6 +69,12 @@ const METRIC_META: Record<string, { label: string; color: string; prefix?: strin
   churn: { label: "Churn Rate", color: "#ef4444", suffix: "%" },
 }
 
+// Parse "DD-MM-YYYY" into a Date object for reliable sorting and display
+function parseDMY(dmy: string): Date {
+  const [dd, mm, yyyy] = dmy.split("-")
+  return new Date(`${yyyy}-${mm}-${dd}T12:00:00`)
+}
+
 function buildMetrics(items: DynamoItem[]): Metric[] {
   const grouped: Record<string, DynamoItem[]> = {}
   for (const item of items) {
@@ -80,13 +86,13 @@ function buildMetrics(items: DynamoItem[]): Metric[] {
 
   return Object.entries(grouped).map(([id, dbItems]) => {
     const meta = METRIC_META[id]
-    const sorted = [...dbItems].sort((a, b) => a.date.localeCompare(b.date))
+    const sorted = [...dbItems].sort((a, b) => parseDMY(a.date).getTime() - parseDMY(b.date).getTime())
     const last7 = sorted.slice(-7)
     const latest = last7[last7.length - 1]
     const prev = last7.length > 1 ? last7[last7.length - 2].value : latest.value
     const trend = prev !== 0 ? +(((latest.value - prev) / prev) * 100).toFixed(1) : 0
     const history = last7.map((item) => ({
-      date: new Date(item.date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      date: parseDMY(item.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
       value: item.value,
     }))
     return { id, ...meta, value: latest.value, trend, history }
@@ -298,19 +304,25 @@ function MetricCard({ m, flash }: { m: Metric; flash?: number }) {
   )
 }
 
+const RATE_LIMIT_PER_HOUR = 10
+
 const METRIC_OPTIONS = [
-  { value: "dau", label: "Daily Active Users" },
-  { value: "revenue", label: "Revenue" },
-  { value: "signups", label: "Signups" },
+  { value: "dau", label: "Daily Active Users", min: 0, max: 10_000 },
+  { value: "revenue", label: "Revenue", min: 0, max: 50_000 },
+  { value: "signups", label: "Signups", min: 0, max: 2_000 },
+  { value: "churn", label: "Churn Rate", min: 0, max: 20 },
 ]
 
 interface AddMetricPanelProps {
   token: string
   metrics: Metric[]
   onAdd: (id: string, delta: number, newTotal: number) => void
+  requestsUsed: number
+  onRequestUsed: () => void
+  onRateLimited: () => void
 }
 
-function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
+function AddMetricPanel({ token, metrics, onAdd, requestsUsed, onRequestUsed, onRateLimited }: AddMetricPanelProps) {
   const [open, setOpen] = useState(false)
   const [metricName, setMetric] = useState(METRIC_OPTIONS[0].value)
   const [delta, setDelta] = useState("")
@@ -319,12 +331,18 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
   const [okMsg, setOkMsg] = useState("")
   const [errMsg, setErrMsg] = useState("")
 
+  const requestsLeft = Math.max(0, RATE_LIMIT_PER_HOUR - requestsUsed)
+
   const current = metrics.find((m) => m.id === metricName)
   const meta = METRIC_META[metricName]
+  const selectedOption = METRIC_OPTIONS.find((o) => o.value === metricName)!
   const deltaNum = Number(delta)
   const newTotal = parseFloat(((current?.value ?? 0) + (Number.isFinite(deltaNum) ? deltaNum : 0)).toFixed(10))
+  const outOfRange = delta !== "" && Number.isFinite(deltaNum) && (newTotal < selectedOption.min || newTotal > selectedOption.max)
 
   const fmt = (v: number) =>
+    meta.prefix ? `${meta.prefix}${v.toLocaleString()}` : meta.suffix ? `${v}${meta.suffix}` : v.toLocaleString()
+  const fmtBound = (v: number) =>
     meta.prefix ? `${meta.prefix}${v.toLocaleString()}` : meta.suffix ? `${v}${meta.suffix}` : v.toLocaleString()
 
   const submit = async (e: React.FormEvent) => {
@@ -336,22 +354,37 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
       const d = validateMetricDelta(delta)
       const cur = metrics.find((m) => m.id === id)?.value ?? 0
       const tot = cur + d
+      const bounds = METRIC_OPTIONS.find((o) => o.value === id)!
+      if (tot < bounds.min || tot > bounds.max) {
+        throw new Error(`Result ${fmt(tot)} is out of range. Must be between ${fmtBound(bounds.min)} and ${fmtBound(bounds.max)}.`)
+      }
 
       const res = await fetch(`${API_URL}/metrics`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ metricName: id, delta: d, total: tot, value: tot, date: new Date().toISOString().slice(0, 10) }),
+        body: JSON.stringify({
+          metricName: id,
+          delta: d,
+          total: tot,
+          value: tot,
+          date: (() => {
+            const n = new Date()
+            return `${String(n.getDate()).padStart(2, "0")}-${String(n.getMonth() + 1).padStart(2, "0")}-${n.getFullYear()}`
+          })(),
+        }),
       })
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string }
+        if (res.status === 429) onRateLimited()
         throw new Error(body.error ?? `HTTP ${res.status}`)
       }
 
       onAdd(id, d, tot)
+      onRequestUsed()
       setOkMsg(`Saved! ${d >= 0 ? "+" : ""}${fmt(d)} → ${fmt(tot)}`)
       setStatus("ok")
       setDelta("")
-      setTimeout(() => setStatus("idle"), 2500)
+      setTimeout(() => setStatus("idle"), 4500)
     } catch (err: unknown) {
       setErrMsg(err instanceof Error ? err.message : "Invalid input.")
       setStatus("err")
@@ -391,9 +424,14 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-muted-foreground">
-                Value
-                <span className="ml-1 text-muted-foreground/60">(+add / −subtract)</span>
+              <label className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>
+                  Value
+                  <span className="ml-1 text-muted-foreground/60">(+add / −subtract)</span>
+                </span>
+                <span className="text-muted-foreground/50">
+                  {fmtBound(selectedOption.min)} – {fmtBound(selectedOption.max)}
+                </span>
               </label>
               <input
                 type="number"
@@ -408,12 +446,19 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
           </div>
 
           {delta !== "" && Number.isFinite(deltaNum) && (
-            <div className="flex items-center gap-2 rounded-md bg-muted/50 px-3 py-2 text-md">
+            <div
+              className={`flex items-center gap-2 rounded-md px-3 py-2 text-md ${outOfRange ? "bg-red-900/20 ring-1 ring-red-800/50" : "bg-muted/50"}`}
+            >
               <span className="text-muted-foreground">Current:</span>
               <span className="text-foreground">{fmt(current?.value ?? 0)}</span>
               <span className="text-muted-foreground">→</span>
-              <span className={`font-semibold ${deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>{fmt(newTotal)}</span>
-              <span className={`ml-auto ${deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+              <span
+                className={`font-semibold ${outOfRange ? "text-red-400" : deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}
+              >
+                {fmt(newTotal)}
+              </span>
+              {outOfRange && <span className="text-xs text-red-400">out of range</span>}
+              <span className={`ml-auto ${outOfRange ? "text-red-400" : deltaNum >= 0 ? "text-emerald-400" : "text-red-400"}`}>
                 {deltaNum >= 0 ? "+" : ""}
                 {fmt(deltaNum)}
               </span>
@@ -425,11 +470,17 @@ function AddMetricPanel({ token, metrics, onAdd }: AddMetricPanelProps) {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || requestsLeft === 0 || outOfRange}
             className="rounded-md bg-primary px-3 py-1.5 text-md font-medium text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Saving…" : "Save"}
           </button>
+
+          <p
+            className={`text-xs ${requestsLeft === 0 ? "text-red-400" : requestsLeft <= 3 ? "text-amber-400" : "text-muted-foreground"}`}
+          >
+            {requestsLeft} request{requestsLeft !== 1 ? "s" : ""} left this hour
+          </p>
         </form>
       )}
     </div>
@@ -442,12 +493,14 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
   const [fetchErr, setFetchErr] = useState("")
   const [seconds, setSeconds] = useState(SESSION_SECONDS)
   const [deltaFlash, setDeltaFlash] = useState<Record<string, number>>({})
+  const [requestsUsed, setRequestsUsed] = useState(0)
 
   useEffect(() => {
     fetch(`${API_URL}/metrics`, { headers: { Authorization: `Bearer ${auth.token}` } })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((data: { metrics?: DynamoItem[] }) => {
+      .then((data: { metrics?: DynamoItem[]; requestsUsed?: number }) => {
         setMetrics(buildMetrics(data.metrics ?? []))
+        setRequestsUsed(data.requestsUsed ?? 0)
       })
       .catch((err: unknown) => setFetchErr(err instanceof Error ? err.message : "Failed to load"))
       .finally(() => setLoading(false))
@@ -538,7 +591,16 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
               ))}
           </div>
         )}
-        {auth.role === "Admin" && !loading && <AddMetricPanel token={auth.token} metrics={metrics} onAdd={handleAdd} />}
+        {auth.role === "Admin" && !loading && (
+          <AddMetricPanel
+            token={auth.token}
+            metrics={metrics}
+            onAdd={handleAdd}
+            requestsUsed={requestsUsed}
+            onRequestUsed={() => setRequestsUsed((n) => n + 1)}
+            onRateLimited={() => setRequestsUsed(RATE_LIMIT_PER_HOUR)}
+          />
+        )}
       </div>
     </div>
   )
