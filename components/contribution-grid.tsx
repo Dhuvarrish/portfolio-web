@@ -16,12 +16,11 @@ const levelClasses: Record<number, string> = {
   4: "bg-green-500",
 }
 
-function countToLevel(count: number, max: number): 0 | 1 | 2 | 3 | 4 {
-  if (count === 0 || max === 0) return 0
-  const ratio = count / max
-  if (ratio <= 0.25) return 1
-  if (ratio <= 0.5) return 2
-  if (ratio <= 0.75) return 3
+function countToLevel(count: number): 0 | 1 | 2 | 3 | 4 {
+  if (count === 0) return 0
+  if (count <= 2) return 1
+  if (count <= 5) return 2
+  if (count <= 9) return 3
   return 4
 }
 
@@ -32,7 +31,6 @@ const DAY_LABEL_W = 28
 export function ContributionGrid({ contributions, total }: { contributions: ContributionDay[]; total: number }) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const maxCount = Math.max(...contributions.map((d) => d.count), 1)
   const firstDay = contributions.length > 0 ? new Date(contributions[0].date).getDay() : 0
   const padded = [...Array.from({ length: firstDay }, () => null), ...contributions]
   const weeks: (ContributionDay | null)[][] = []
@@ -88,7 +86,7 @@ export function ContributionGrid({ contributions, total }: { contributions: Cont
                     <div
                       key={di}
                       title={`${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}`}
-                      className={`size-[13px] rounded-sm ${levelClasses[countToLevel(day.count, maxCount)]}`}
+                      className={`size-[13px] rounded-sm ${levelClasses[countToLevel(day.count)]}`}
                     />
                   ) : (
                     <div key={di} className="size-[13px]" />
