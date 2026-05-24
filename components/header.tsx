@@ -4,7 +4,6 @@ import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { BsSun, BsMoon } from "react-icons/bs"
 import { Menu, User, Briefcase, Mail, ChevronRight, Info, FileText } from "lucide-react"
 import { FaGithub, FaLinkedin } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 const navItems = [
   { label: "About", href: "/", icon: User },
@@ -31,7 +29,6 @@ const contactItem = { label: "Contact", href: "/contact", icon: Mail }
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
-  const isMobile = useIsMobile()
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href))
 
@@ -76,32 +73,20 @@ export function Header() {
           >
             <FaLinkedin className="h-5 w-5" />
           </a>
-          {isMobile ? (
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200 hover:scale-110"
-            >
-              <FileText className="h-5 w-5" />
-              <span className="text-sm font-medium">Resume</span>
-            </a>
-          ) : (
-            <Dialog>
-              <DialogTrigger asChild>
-                <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200 hover:scale-110">
-                  <FileText className="h-5 w-5" />
-                  <span className="text-sm font-medium">Resume</span>
-                </button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl w-[90vw] h-[90vh] flex flex-col p-0 gap-0">
-                <DialogHeader className="flex flex-row items-center justify-between px-5 py-3 border-b border-border shrink-0">
-                  <DialogTitle className="text-sm font-medium">Resume</DialogTitle>
-                </DialogHeader>
-                <embed src="/resume.pdf" type="application/pdf" className="w-full flex-1 rounded-b-2xl" />
-              </DialogContent>
-            </Dialog>
-          )}
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="inline-flex items-center gap-1.5 h-9 px-3 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200 hover:scale-110">
+                <FileText className="h-5 w-5" />
+                <span className="text-sm font-medium">Resume</span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl w-[90vw] h-[90vh] flex flex-col p-0 gap-0">
+              <DialogHeader className="flex flex-row items-center justify-between px-5 py-3 border-b border-border shrink-0">
+                <DialogTitle className="text-sm font-medium">Resume</DialogTitle>
+              </DialogHeader>
+              <iframe src="/resume.pdf" className="w-full flex-1 rounded-b-2xl" />
+            </DialogContent>
+          </Dialog>
           <Button
             variant="ghost"
             size="icon"
