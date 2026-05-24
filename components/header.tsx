@@ -134,11 +134,11 @@ export function Header() {
               <span>{infoItem.label}</span>
             </Link>
 
-            <Collapsible defaultOpen={pathname.startsWith("/projects")} className="group/collapsible">
+            <Collapsible defaultOpen={true} className="group/collapsible">
               <CollapsibleTrigger
                 className={`flex w-full items-center gap-4 rounded-xl px-5 py-4 text-lg font-medium transition-colors
                 ${
-                  pathname.startsWith("/projects")
+                  pathname.startsWith("/projects") && !projectsChildren.some((c) => pathname.startsWith(c.href))
                     ? "bg-[hsl(var(--sidebar-active))] text-[hsl(var(--sidebar-active-foreground))]"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
