@@ -59,9 +59,13 @@ export default async function GithubPage() {
               <div className="min-w-0 flex-1 overflow-hidden">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium truncate">{repo.name}</p>
-                  {repo.private && (
+                  {repo.private ? (
                     <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground shrink-0">
                       <Lock className="size-3" /> Private
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-green-800 bg-green-900/30 px-2 py-0.5 text-xs text-green-400 shrink-0">
+                      Public
                     </span>
                   )}
                 </div>
@@ -69,6 +73,7 @@ export default async function GithubPage() {
                   <p className="mt-1 text-sm text-muted-foreground line-clamp-2 break-words overflow-hidden">{repo.description}</p>
                 )}
               </div>
+              {!repo.private && <ExternalLink className="size-3.5 shrink-0 mt-0.5 text-muted-foreground" />}
             </div>
             {repo.language && (
               <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
