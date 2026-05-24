@@ -10,10 +10,10 @@ type ContributionDay = {
 
 const levelClasses: Record<number, string> = {
   0: "bg-muted",
-  1: "bg-green-300 dark:bg-green-900",
-  2: "bg-green-400 dark:bg-green-700",
-  3: "bg-green-600 dark:bg-green-500",
-  4: "bg-green-800 dark:bg-green-400",
+  1: "bg-green-900",
+  2: "bg-green-700",
+  3: "bg-green-600",
+  4: "bg-green-500",
 }
 
 function countToLevel(count: number, max: number): 0 | 1 | 2 | 3 | 4 {
@@ -32,20 +32,7 @@ const DAY_LABEL_W = 28
 export function ContributionGrid({ contributions, total }: { contributions: ContributionDay[]; total: number }) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const onWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-        e.preventDefault()
-        el.scrollLeft += e.deltaY
-      }
-    }
-    el.addEventListener("wheel", onWheel, { passive: false })
-    return () => el.removeEventListener("wheel", onWheel)
-  }, [])
-
-  const maxCount = Math.max(...contributions.map(d => d.count), 1)
+  const maxCount = Math.max(...contributions.map((d) => d.count), 1)
   const firstDay = contributions.length > 0 ? new Date(contributions[0].date).getDay() : 0
   const padded = [...Array.from({ length: firstDay }, () => null), ...contributions]
   const weeks: (ContributionDay | null)[][] = []
@@ -54,7 +41,7 @@ export function ContributionGrid({ contributions, total }: { contributions: Cont
   const monthLabels: { label: string; weekIndex: number }[] = []
   let lastMonth = -1
   weeks.forEach((week, wi) => {
-    const firstReal = week.find(d => d !== null)
+    const firstReal = week.find((d) => d !== null)
     if (firstReal) {
       const month = new Date(firstReal.date).getMonth()
       if (month !== lastMonth) {
@@ -66,22 +53,18 @@ export function ContributionGrid({ contributions, total }: { contributions: Cont
 
   return (
     <div className="w-full min-w-[22rem] max-w-[25rem] md:min-w-[35rem] md:max-w-[35rem] rounded-lg border border-border p-10 mb-8">
-      <p className="text-sm font-medium mb-3 text-muted-foreground">
-        {total} contributions in the last year
-      </p>
+      <p className="text-sm font-medium mb-3 text-muted-foreground">{total} contributions in the last year</p>
 
       <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden">
         <div style={{ width: "max-content", paddingBottom: 20 }}>
           {/* Month labels */}
           <div className="flex gap-[3px]" style={{ paddingLeft: DAY_LABEL_W, height: 18 }}>
             {weeks.map((week, wi) => {
-              const label = monthLabels.find(m => m.weekIndex === wi)
+              const label = monthLabels.find((m) => m.weekIndex === wi)
               return (
                 <div key={wi} style={{ width: 13, flexShrink: 0, position: "relative" }}>
                   {label && (
-                    <span className="absolute text-[10px] text-muted-foreground whitespace-nowrap left-0 top-0">
-                      {label.label}
-                    </span>
+                    <span className="absolute text-[10px] text-muted-foreground whitespace-nowrap left-0 top-0">{label.label}</span>
                   )}
                 </div>
               )
