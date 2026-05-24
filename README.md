@@ -10,10 +10,10 @@ Personal portfolio frontend built with Next.js 16, TypeScript, and shadcn/ui. In
 
 ## Pages
 
-| Route                            | Description                                                        |
-| -------------------------------- | ------------------------------------------------------------------ |
-| `/`                              | About — hero, expertise, work approach, education & certifications |
-| `/github`                        | GitHub profile, recent repos, and contribution heatmap             |
-| `/projects/backend-api-showcase` | Live demo of the backend REST API                                  |
-| `/projects/microservice`         | Microservice project showcase                                      |
-| `/contact`                       | Contact form                                                       |
+| Route                            | Description                                                            |
+| -------------------------------- | ---------------------------------------------------------------------- |
+| `/`                              | About — about me, expertise, work approach, education & certifications |
+| `/github`                        | GitHub profile, recent repos, and contribution heatmap                 |
+| `/projects/backend-api-showcase` | Live demo of the backend REST API                                      |
+| `/projects/microservice`         | Microservice project showcase                                          |
+| `/contact`                       | Contact form                                                           |
