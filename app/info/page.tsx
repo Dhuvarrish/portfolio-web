@@ -1,6 +1,11 @@
-import { Layers, Paintbrush, FolderOpen, Bold } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+"use client"
 
+import { Layers, Paintbrush, FolderOpen } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Image from "next/image"
+import Lightbox from "yet-another-react-lightbox"
+import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom"
+import { useState } from "react"
 const builtWith = [
   { name: "Next.js 16", description: "App router, server components, file-based routing" },
   { name: "TypeScript", description: "Type safety across the entire codebase" },
@@ -28,6 +33,8 @@ const projects: {
 ]
 
 export default function InfoPage() {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+
   return (
     <div className="w-full space-y-12">
       {/* About this Portfolio */}
@@ -146,6 +153,50 @@ export default function InfoPage() {
               dependency injection compared to what I was used to in Node.js — they solve the same problems but with very different
               patterns.
             </p>
+            <div className="pt-6 space-y-3">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Architecture</h1>
+              <div
+                className="rounded-2xl border border-border overflow-hidden cursor-zoom-in"
+                onClick={() => setLightboxOpen(true)}
+              >
+                <Image
+                  src="/projects-architecture.png"
+                  alt="Projects architecture diagram"
+                  width={1200}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+
+              <Lightbox
+                open={lightboxOpen}
+                close={() => setLightboxOpen(false)}
+                slides={[{ src: "/projects-architecture.png" }]}
+                plugins={[ZoomPlugin]}
+                zoom={{
+                  maxZoomPixelRatio: 5,
+                  zoomInMultiplier: 1.5,
+                  keyboardMoveDistance: 50,
+                  wheelZoomDistanceFactor: 100,
+                  pinchZoomDistanceFactor: 100,
+                  scrollToZoom: true,
+                }}
+                carousel={{ finite: true }}
+                render={{ buttonPrev: () => null, buttonNext: () => null }}
+              />
+              <p className="text-center text-xs text-muted-foreground">Click on the image to zoom</p>
+              <p className="text-center text-xs text-muted-foreground pt-1">
+                I created this architecture diagram with{" "}
+                <a
+                  href="https://app.diagrams.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-foreground transition-colors"
+                >
+                  Draw.io
+                </a>{" "}
+              </p>
+            </div>
           </TabsContent>
 
           {/* SaaS Dashboard */}
@@ -207,11 +258,56 @@ export default function InfoPage() {
               flat line.
             </p>
             <p>
-              <span className="text-foreground font-medium">Hosting</span> {""}the Next.js frontend is built as a static export,
-              uploaded to an S3 bucket, and served through CloudFront (AWS&apos;s CDN). The custom domain is registered and managed
-              through Cloudflare, which handles the DNS and points traffic to the CloudFront distribution. This means pages load
-              from an edge server close to the visitor rather than from a single region.
+              <span className="text-foreground font-medium">Hosting</span> {""}the Next.js frontend is deployed via AWS Amplify,
+              connected directly to the GitHub repository so every push to the main branch triggers an automatic build and deploy.
+              The custom domain is registered and managed through Cloudflare, which handles the DNS and points traffic to the
+              Amplify distribution. This means pages load from an edge server close to the visitor rather than from a single region.
             </p>
+
+            <div className="pt-6 space-y-3">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Architecture</h1>
+              <div
+                className="rounded-2xl border border-border overflow-hidden cursor-zoom-in"
+                onClick={() => setLightboxOpen(true)}
+              >
+                <Image
+                  src="/saas-architecture.png"
+                  alt="Projects architecture diagram"
+                  width={1200}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+
+              <Lightbox
+                open={lightboxOpen}
+                close={() => setLightboxOpen(false)}
+                slides={[{ src: "/saas-architecture.png" }]}
+                plugins={[ZoomPlugin]}
+                zoom={{
+                  maxZoomPixelRatio: 5,
+                  zoomInMultiplier: 1.5,
+                  keyboardMoveDistance: 50,
+                  wheelZoomDistanceFactor: 100,
+                  pinchZoomDistanceFactor: 100,
+                  scrollToZoom: true,
+                }}
+                carousel={{ finite: true }}
+                render={{ buttonPrev: () => null, buttonNext: () => null }}
+              />
+              <p className="text-center text-xs text-muted-foreground">Click on the image to zoom</p>
+              <p className="text-center text-xs text-muted-foreground pt-1">
+                I created this architecture diagram with{" "}
+                <a
+                  href="https://app.diagrams.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 hover:text-foreground transition-colors"
+                >
+                  Draw.io
+                </a>{" "}
+              </p>
+            </div>
           </TabsContent>
         </Tabs>
       </section>

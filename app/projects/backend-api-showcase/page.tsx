@@ -2,9 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
-import Lightbox from "yet-another-react-lightbox"
-import ZoomPlugin from "yet-another-react-lightbox/plugins/zoom"
 import { ChevronRight } from "lucide-react"
 import { getProjects } from "@/app/actions"
 import type { Project } from "@/lib/types"
@@ -12,7 +9,6 @@ import type { Project } from "@/lib/types"
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
-  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   useEffect(() => {
     getProjects()
@@ -28,10 +24,6 @@ export default function ProjectsPage() {
         <p className="mt-3 text-md text-muted-foreground leading-relaxed">
           A set of demos built to showcase full-stack skills across the frontend and backend. Each project connects a Next.js
           frontend to a C# .NET API, with data served from backend mock data — no database involved.
-        </p>
-        <p className="mt-1 text-md text-muted-foreground leading-relaxed">
-          The architecture diagram below shows the full request flow, including database path. Database is not used here, but the
-          current setup is designed to support it.
         </p>
       </div>
 
@@ -50,48 +42,6 @@ export default function ProjectsPage() {
           ))}
         </div>
       )}
-
-      <div className="pt-6 space-y-3">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Architecture</h1>
-        <div className="rounded-2xl border border-border overflow-hidden cursor-zoom-in" onClick={() => setLightboxOpen(true)}>
-          <Image
-            src="/projects-architecture.png"
-            alt="Projects architecture diagram"
-            width={1200}
-            height={600}
-            className="w-full h-auto"
-          />
-        </div>
-
-        <Lightbox
-          open={lightboxOpen}
-          close={() => setLightboxOpen(false)}
-          slides={[{ src: "/projects-architecture.png" }]}
-          plugins={[ZoomPlugin]}
-          zoom={{
-            maxZoomPixelRatio: 5,
-            zoomInMultiplier: 1.5,
-            keyboardMoveDistance: 50,
-            wheelZoomDistanceFactor: 100,
-            pinchZoomDistanceFactor: 100,
-            scrollToZoom: true,
-          }}
-          carousel={{ finite: true }}
-          render={{ buttonPrev: () => null, buttonNext: () => null }}
-        />
-        <p className="text-center text-xs text-muted-foreground">Click on the image to zoom</p>
-        <p className="text-center text-xs text-muted-foreground pt-1">
-          I created this architecture diagram with{" "}
-          <a
-            href="https://app.diagrams.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-foreground transition-colors"
-          >
-            Draw.io
-          </a>{" "}
-        </p>
-      </div>
     </div>
   )
 }
