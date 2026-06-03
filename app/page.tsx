@@ -36,7 +36,7 @@ const expertise = [
     bg: "bg-amber-500/10 dark:bg-amber-500/15",
     iconColor: "text-amber-500",
     title: "Testing & Quality",
-    tags: ["Jest", "Vitest", "TDD"],
+    tags: ["Jest", "Vitest", "TDD", "BDD"],
     description: "Automated tests from core functionality to visual testing for reliability and maintainability.",
   },
   {
