@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { Copy, Check, LogOut, Plus, X, TrendingUp, TrendingDown, Timer } from "lucide-react"
 import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { LoadingSpinner } from "@/components/loading-spinner"
 
 const API_URL = process.env.NEXT_PUBLIC_DEMO_API_URL ?? ""
 
@@ -205,6 +206,17 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <LoadingSpinner size="lg" />
+          <span className="text-sm text-muted-foreground">Loading</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-1 items-center justify-center p-8">
       <form onSubmit={submit} className="flex w-full max-w-xs flex-col gap-4">
@@ -234,10 +246,9 @@ function LoginScreen({ onLogin }: { onLogin: (a: AuthState) => void }) {
 
         <button
           type="submit"
-          disabled={loading}
-          className="mt-1 rounded-md bg-primary py-2 text-md  font-semibold text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="mt-1 rounded-md bg-primary py-2 text-md  font-semibold text-primary-foreground transition hover:opacity-90"
         >
-          {loading ? "Signing in…" : "Sign in"}
+          Sign in
         </button>
       </form>
     </div>
@@ -494,6 +505,7 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
   const [seconds, setSeconds] = useState(SESSION_SECONDS)
   const [deltaFlash, setDeltaFlash] = useState<Record<string, number>>({})
   const [requestsUsed, setRequestsUsed] = useState(0)
+  const [logoutLoading, setLogoutLoading] = useState(false)
 
   useEffect(() => {
     fetch(`${API_URL}/metrics`, { headers: { Authorization: `Bearer ${auth.token}` } })
@@ -512,6 +524,7 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
   }, [])
 
   const handleLogout = useCallback(async () => {
+    setLogoutLoading(true)
     await cognitoLogout(auth.token, auth.username)
     onLogout()
   }, [auth.token, auth.username, onLogout])
@@ -548,6 +561,17 @@ function DashboardView({ auth, onLogout }: { auth: AuthState; onLogout: () => vo
           return n
         }),
       2500
+    )
+  }
+
+  if (logoutLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <LoadingSpinner size="lg" />
+          <span className="text-sm text-muted-foreground">Loading</span>
+        </div>
+      </div>
     )
   }
 
